@@ -5,26 +5,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script>
+        document.addEventListener("DOMContentLoaded",function(){
+            class potworek{
+                constructor(x,y){
+                    this.x=x;
+                    this.y=y;
+                }
+                render(){
+                    ctx.fillStyle="red";
+                    ctx.fillRect(this.x,this.y,50,50);
+                }
+            }
+            let can=document.querySelector(".can");
+            var tablica=[]
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
+            console.log(tablica[0].render);
+            console.log(tablica);
+            var stworek=new potworek(5,6);
+            var c=0
+        
+        let ctx=can.getContext("2d");
+        can.width=window.innerWidth/1.5;
+        can.height=window.innerHeight/1.5;
+
+
+        function rysowanie(){
+            ctx.clearRect(0,0,can.width,can.height);
+                for (const pojda of tablica) {
+                    pojda.render()
+                }
+            requestAnimationFrame(rysowanie)
+        }
+        requestAnimationFrame(rysowanie)
+        
+
+        
+    })
+        
+    </script>
 </head>
 <body>
-    <script>
-        //create function that takes in a string and returns the string reversed
-        function reverseString(str) {
-            //split the string into an array of characters
-            var splitString = str.split("");
-            //reverse the array of characters
-            var reverseArray = splitString.reverse();
-            //join the array of characters back into a string
-            var joinArray = reverseArray.join("");
-            //return the reversed string
-            return joinArray;
-        }
-        for (var i = 0; i < 10; i++) {
-            console.log(reverseString("Hello World"));
-        }
-        if (i == 10) {
-            console.log("I am done");
-        }
-    </script>
+    <canvas class="can"></canvas>
 </body>
 </html>
