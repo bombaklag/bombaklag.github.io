@@ -1,114 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
-              var can,ctx,tablica=[],myszax=0,myszay=0,i=0,mapa=[{x:400,y:110}],heros=[];
-        document.addEventListener("DOMContentLoaded",function(){
-            can=document.querySelector(".can");
-            ctx=can.getContext("2d");
-        can.width=window.innerWidth/1.2;
-        can.height=window.innerHeight/1.2;
-        requestAnimationFrame(rysowanie)
-        
-            tablica.push(new potworek(100,100))
+        var can, ctx, tablica = [], myszax = 0, myszay = 0, i = 0, mapa = [{ x: 400, y: 110 }], heros = [];
+        document.addEventListener("DOMContentLoaded", function () {
+            can = document.querySelector(".can");
+            ctx = can.getContext("2d");
+            can.width = window.innerWidth / 1.2;
+            can.height = window.innerHeight / 1.2;
+            requestAnimationFrame(rysowanie)
+
+            tablica.push(new potworek(100, 100))
             console.log(tablica[0].render);
             console.log(tablica);
-            heros.push(new bohater(10,100))
-    })
-    class potworek{
-                constructor(x,y){
-                    this.x=x;
-                    this.y=y;
+            heros.push(new bohater(10, 100))
+        })
+        class potworek {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            render() {
+                if (mapa[i]) {
+                    this.chodzenie()
                 }
-                render(){
-                    if (mapa[i]) {
-                        this.chodzenie()
-                    }
-                   
-                    ctx.fillStyle="red";
-                    ctx.save();
-                    ctx.translate(this.x,this.y);
-                    if (mapa[i]) {
-                        ctx.rotate(Math.atan2(mapa[i]["y"]-this.y,mapa[i]["x"]-this.x))
-                    }
-                   
-                    ctx.fillRect(-25,-25,50,50);
-                    ctx.restore();
-                    
+                ctx.fillStyle = "red";
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                if (mapa[i]) {
+                    ctx.rotate(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x))
                 }
-                chodzenie(){
-                    
-                    
-                    
-                    this.x+=Math.cos(Math.atan2(mapa[i]["y"]-this.y,mapa[i]["x"]-this.x))
-                    this.y+=Math.sin(Math.atan2(mapa[i]["y"]-this.y,mapa[i]["x"]-this.x))
-                    if (Math.ceil(this.x)==mapa[i]["x"]) {
-                        console.log(Math.ceil(this.x),Math.ceil(this.y));
-                        
-                        i++
-                    }
-                }
-                
-
-            }   
-            class bohater{
-                constructor(dmg,range){
-                    this.x=600
-                    this.y=200;
-                }
-                render(){
-                    ctx.fillStyle="green";
-                    ctx.fillRect(this.x,this.y,50,50);
-                    ctx.beginPath()
-                    ctx.arc(this.x,this.y,100,0,2*Math.PI)
-                    ctx.fill()
+                ctx.fillRect(-25, -25, 50, 50);
+                ctx.restore();
+            }
+            chodzenie() {
+                this.x += Math.cos(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x))
+                this.y += Math.sin(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x))
+                if (Math.ceil(this.x) == mapa[i]["x"]) {
+                    console.log(Math.ceil(this.x), Math.ceil(this.y));
+                    i++
                 }
             }
-            
-            window.addEventListener('click',function(x){
-                 myszax=x.x
-                 myszay=x.y
-                 mapa.push({x:myszax,y:myszay})
-                 console.log(mapa);
-            })
+        }
+        class bohater {
+            constructor(dmg, range) {
+                this.x = 600
+                this.y = 200;
+            }
+            render() {
+                ctx.fillStyle = "green";
+                ctx.fillRect(this.x, this.y, 50, 50);
+                ctx.beginPath()
+                ctx.arc(this.x, this.y, 100, 0, 2 * Math.PI)
+                ctx.fill()
+            }
+        }
 
-            
-        
-            
-           
-            var c=0
-            var staryczas=0
-            
-
-            //funkcja co rysuje
-        function rysowanie(){
-            var fps=1000/(performance.now()-staryczas)
-            ctx.clearRect(0,0,can.width,can.height);
-                for (const pojda of tablica) {
-                    pojda.render()//renderowanie
-                }
-                for (const pojdowina of mapa) {
-                    ctx.fillStyle="blue";
-                    ctx.fillRect(pojdowina.x-5,pojdowina.y-5,10,10)
-                }
-                for (const pojdus of heros) {
-                    pojdus.render()
-                }
-                staryczas=performance.now()
-                console.log(fps);
+        window.addEventListener('click', function (x) {
+            myszax = x.x
+            myszay = x.y
+            mapa.push({ x: myszax, y: myszay })
+            console.log(mapa);
+        })
+        var c = 0
+        var staryczas = 0
+        //funkcja co rysuje
+        function rysowanie() {
+            var fps = 1000 / (performance.now() - staryczas)
+            ctx.clearRect(0, 0, can.width, can.height);
+            for (const pojda of tablica) {
+                pojda.render()//renderowanie
+            }
+            for (const pojdowina of mapa) {
+                ctx.fillStyle = "blue";
+                ctx.fillRect(pojdowina.x - 5, pojdowina.y - 5, 10, 10)
+            }
+            for (const pojdus of heros) {
+                pojdus.render()
+            }
+            staryczas = performance.now()
+            console.log(fps);
             requestAnimationFrame(rysowanie)//zeby petla byla nieskonczona
         }
-        
-        
-
-        
+        function dystans(x1, y1, x2, y2) {
+            return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) // pitogaras smiecie
+        }
     </script>
 </head>
+
 <body>
     <canvas class="can"></canvas>
 </body>
+
 </html>
