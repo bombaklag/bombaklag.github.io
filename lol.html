@@ -6,52 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script>
+              var can,ctx,tablica=[],myszax=0,myszay=0,i=0,mapa=[{x:900,y:110}];
         document.addEventListener("DOMContentLoaded",function(){
-            class potworek{
+            can=document.querySelector(".can");
+            ctx=can.getContext("2d");
+        can.width=window.innerWidth/1.2;
+        can.height=window.innerHeight/1.2;
+        requestAnimationFrame(rysowanie)
+        
+            tablica.push(new potworek(100,100))
+            console.log(tablica[0].render);
+            console.log(tablica);
+    })
+    class potworek{
                 constructor(x,y){
                     this.x=x;
                     this.y=y;
                 }
                 render(){
+                    this.chodzenie()
                     ctx.fillStyle="red";
-                    ctx.fillRect(this.x,this.y,50,50);
+                    ctx.save();
+                    ctx.translate(this.x,this.y);
+                    ctx.rotate(Math.atan2(mapa[i]["y"]-this.y,mapa[i]["y"]-this.x))
+                    ctx.fillRect(-25,-25,50,50);
+                    ctx.restore();
+                    
                 }
-            }
-            let can=document.querySelector(".can");
-            var tablica=[]
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            tablica.push(new potworek(Math.random()*can.width,Math.random()*can.height))
-            console.log(tablica[0].render);
-            console.log(tablica);
-            var stworek=new potworek(5,6);
+                chodzenie(){
+                    if (Math.floor(this.x)==mapa[i]["x"]) {
+                        console.log('bombaklag');
+                        i++
+                    }
+                    
+                    console.log(Math.floor(this.y),Math.floor(mapa[i]["x"]));
+                    this.x+=Math.cos(Math.atan2(mapa[i]["y"]-this.y,mapa[i]["x"]-this.x))
+                    this.y+=Math.sin(Math.atan2(mapa[i]["y"]-this.y,mapa[i]["x"]-this.x))
+                }
+                
+
+            }   
+
+            
+            window.addEventListener('click',function(x){
+                 myszax=x.x
+                 myszay=x.y
+                 mapa.push({x:myszax,y:myszay})
+                 console.log(mapa);
+            })
+
+            
+        
+            
+           
             var c=0
         
-        let ctx=can.getContext("2d");
-        can.width=window.innerWidth/1.5;
-        can.height=window.innerHeight/1.5;
+        
 
-
+            //funkcja co rysuje
         function rysowanie(){
             ctx.clearRect(0,0,can.width,can.height);
                 for (const pojda of tablica) {
-                    pojda.render()
+                    pojda.render()//renderowanie
                 }
-            requestAnimationFrame(rysowanie)
+            requestAnimationFrame(rysowanie)//zeby petla byla nieskonczona
         }
-        requestAnimationFrame(rysowanie)
+        
         
 
-        
-    })
         
     </script>
 </head>
