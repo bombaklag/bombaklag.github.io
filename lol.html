@@ -39,9 +39,15 @@
                 ctx.restore();
             }
             chodzenie() {
-                this.x += Math.cos(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x))
-                this.y += Math.sin(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x))
-                if (Math.ceil(this.x) == mapa[i]["x"]) {
+                console.log(Math.ceil(this.x), Math.ceil(this.y), mapa[i]["x"], mapa[i]["y"], i)
+                for (let a = 0; a < deltaTime; a++) {
+                    this.x += Math.cos(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x)) / 10
+                    this.y += Math.sin(Math.atan2(mapa[i]["y"] - this.y, mapa[i]["x"] - this.x)) / 10
+                }
+                let roznicaX = Math.abs(this.x - mapa[i]["x"])
+                let roznicaY = Math.abs(this.y - mapa[i]["y"])
+                let wielkoscHitboxa = 10
+                if (roznicaX < wielkoscHitboxa && roznicaY < wielkoscHitboxa) {
                     console.log(Math.ceil(this.x), Math.ceil(this.y));
                     i++
                 }
@@ -70,8 +76,10 @@
         var c = 0
         var staryczas = 0
         //funkcja co rysuje
+        var deltaTime = 0;
         function rysowanie() {
             var fps = 1000 / (performance.now() - staryczas)
+            deltaTime = performance.now() - staryczas;
             ctx.clearRect(0, 0, can.width, can.height);
             for (const pojda of tablica) {
                 pojda.render()//renderowanie
@@ -84,12 +92,13 @@
                 pojdus.render()
             }
             staryczas = performance.now()
-            console.log(fps);
+            //console.log(fps);
             requestAnimationFrame(rysowanie)//zeby petla byla nieskonczona
         }
         function dystans(x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) // pitogaras smiecie
         }
+
     </script>
 </head>
 
