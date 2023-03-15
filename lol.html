@@ -8,6 +8,7 @@
     <title>Document</title>
     <script>
         var can, ctx, tablica = [], myszax = 0, myszay = 0, i = 0, mapa = [{ x: 400, y: 110 }], heros = [];
+        var czaszawsze = new Date().getTime()
         document.addEventListener("DOMContentLoaded", function () {
             can = document.querySelector(".can");
             ctx = can.getContext("2d");
@@ -18,14 +19,16 @@
             tablica.push(new potworek(100, 100))
             console.log(tablica[0].render);
             console.log(tablica);
-            heros.push(new bohater(10, 100))
+            heros.push(new bohater(10,250,0.5))
+            
+            console.log(heros[0].atkspd*1000);
         })
         class potworek {//przeciwnicy
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
-                this.xhitbox=10
-                this.yhitbox=10
+                this.hp = 100;
+                this.maxyhp= 100
             }
             render() {
                 
@@ -37,7 +40,7 @@
                 }
                 ctx.fillRect(-25, -25, 50, 50);
                 ctx.restore();
-                
+                this.maxhp()
             }
             update(){
                 if (mapa[i]) {
@@ -53,12 +56,23 @@
                     i++
                 }
             }
+            maxhp() {
+                ctx.fillStyle = "red";
+                ctx.fillRect(this.x-50, this.y-50, this.maxyhp, 20)
+                ctx.fillStyle = "green";
+                if (this.hp < 0) {
+                    this.hp = this.maxyhp
+                }
+                ctx.fillRect(this.x-50, this.y-50, this.hp, 20)
+            }
         }
         class bohater {//sojusznicy
-            constructor(dmg, range) {
+            constructor(dmg, range,atkspd) {
                 this.x = 600
                 this.y = 200;
                 this.range=range
+                this.atkspd=atkspd
+                this.damage=dmg
             }
             render() {
                 ctx.fillStyle = "green";
@@ -66,14 +80,18 @@
                 
             }
             update(){
-            this.odleglosc()
+            this.bijatyka()
             
             }
             
-            odleglosc(){
-             
+            bijatyka(){
             if(dystans(heros[0].x,heros[0].y,tablica[0].x,tablica[0].y)<this.range){
-                console.log('dziala');
+                let czas=new Date().getTime()
+                if(czas-czaszawsze>heros[0].atkspd*1000){
+                    tablica[0].hp-=this.damage
+                    czaszawsze=czas
+                }
+                
             }
             
             }
