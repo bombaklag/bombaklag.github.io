@@ -2,15 +2,35 @@
 *{
     font-family: 'Titillium Web', sans-serif;
     font-size: larger;
+    color: white;
 }
 body{
-background-color: #3d5a80;
+background-color: #98C1D9;
 margin: 0;
 }
 nav{
 background-color: #293241;
 height: 3em;
 display: flex;
+}
+main{
+    background-color: #3d5a80;
+   
+    margin-left: 1em;
+    padding: 0.5em;
+    display: flex;
+    align-items: center;
+
+}
+main, div{
+    width: 80%;
+    
+}
+p{
+    color: white;
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
 }
 a{
     text-decoration: none;
