@@ -1,11 +1,10 @@
 
-        var can, ctx, tablica = [], myszax = 0, myszay = 0, i = 0, mapa = [{ x: 400, y: 110 }], heros = [],pociski=[];
-        var czaszawsze = new Date().getTime()
+        var can, ctx, tablica = [], myszax = 0, myszay = 0, i = 0, mapa = [{ x: 400, y: 110 }],bombaklag=[], heros = [],pociski=[];
         document.addEventListener("DOMContentLoaded", function () {
             can = document.querySelector(".can");
             ctx = can.getContext("2d");
-            can.width = window.innerWidth / 1.2;
-            can.height = window.innerHeight / 1.2;
+            can.width = window.innerWidth*0.7
+            can.height = window.innerHeight*0.7
             requestAnimationFrame(rysowanie)
 
             tablica.push(new potworek(100, 100))
@@ -16,10 +15,21 @@
             })
             console.log(tablica[0].render);
             console.log(tablica);
-            heros.push(new bohater(69,250,1))
-            
-            
-            
+            bombaklag.push(new bohater(100,100,10,100,1))
+            bombaklag.push(new bohater(100,100,10,100,1))
+            bombaklag.push(new bohater(100,100,10,100,1))
+            bombaklag.push(new bohater(100,100,10,100,1))
+            bombaklag.push(new bohater(100,100,10,100,1))
+            console.log(heros);
+            var t=document.querySelector("#bombaklag")
+            for (let index = 0; index < bombaklag.length; index++) {
+                t.innerHTML+='<div><img src="prezydentduda.jpg"></div>'
+                
+                
+            }
+            t.addEventListener("pointerdown",function(e){
+                
+            })
         })
         class potworek {//przeciwnicy
             constructor(x, y) {
@@ -69,12 +79,13 @@
 
         //sojusznicy
         class bohater {
-            constructor(dmg, range,atkspd) {
-                this.x = 600
-                this.y = 200;
+            constructor(x,y,dmg, range,atkspd) {
+                this.x = x
+                this.y = y;
                 this.range=range
                 this.atkspd=atkspd
                 this.damage=dmg
+                this.czaszawsze = new Date().getTime()
             }
             render() {
                 ctx.fillStyle = "green";
@@ -91,9 +102,9 @@
                     
                     if(dystans(this.x,this.y,tablica[index].x,tablica[index].y)<this.range){
                 let czas=new Date().getTime()
-                if(czas-czaszawsze>this.atkspd*1000){
-                    pociski.push(new strzal(this.x,this.y,index,6))
-                    czaszawsze=czas
+                if(czas-this.czaszawsze>this.atkspd*1000){
+                    pociski.push(new strzal(this.x,this.y,index,6,this))
+                    this.czaszawsze=czas
                 }
                 
             }
@@ -102,12 +113,14 @@
             
         }
         class strzal{
-            constructor(x,y,cel,szybkosc){
+            constructor(x,y,cel,szybkosc,odkogo){
                 this.x=x
                 this.y=y
-                this.dmg=heros[0].damage
+                this.damage=odkogo.damage
                 this.cel=cel
                 this.szybkosc=szybkosc
+                this.odkogo=odkogo
+                
             }
             update(){
                this.bijatyka()
@@ -124,9 +137,9 @@
             }
             bijatyka(){
                 console.log(dystans(this.x,this.y,tablica[this.cel].x-25,tablica[this.cel].y-25));
-                if(dystans(this.x,this.y,tablica[this.cel].x-25,tablica[this.cel].y-25)<40){
+                if(dystans(this.x,this.y,tablica[this.cel].x-25,tablica[this.cel].y-25)<60){
                     console.log('trafiony')
-                    tablica[this.cel].hp-=this.dmg
+                    tablica[this.cel].hp-=this.damage
                     pociski.splice(pociski.indexOf(this),1)
                 }
             }
@@ -136,8 +149,8 @@
             }
         }
         window.addEventListener('click', function (x) {
-            myszax = x.x
-            myszay = x.y
+            myszax = x.x-200
+            myszay = x.y-96
             mapa.push({ x: myszax, y: myszay })
             console.log(mapa);
         })

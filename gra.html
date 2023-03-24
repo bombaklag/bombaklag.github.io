@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gierca</title>
+    <script src="gra.js"></script>
+    <style>@import url('https://fonts.googleapis.com/css2?family=Titillium+Web&display=swap');
+        *{
+            font-family: 'Titillium Web', sans-serif;
+            font-size: larger;
+            color: white;
+        }
+        body{
+        background-color: #2c2f30;
+        margin: 0;
+        }
+        nav{
+        background-color: #293241;
+        height: 96px;
+        display: flex;
+        
+        }
+        main{
+            background-color: #3d5a80;
+           margin-left: 0.5em;
+           border: #53d4ff solid 3px;
+           display: flex;
+           
+        }
+        main, div{
+            width: 80%;
+            
+        }
+        h1{
+            font-size: 2em;
+            margin: 0;
+            padding: 0;
+        }
+        p{
+        
+            color: white;
+            font-size: 1em;
+            margin: 0;
+            padding: 0;
+            
+        }
+        a{
+            text-decoration: none;
+            color: white;
+            padding-top: 0.5em;
+            padding-left: 0.5em;
+            padding-right: 0.5em;
+        }
+        a:hover{
+            background-color: #EE6C4D;
+        }
+        img{
+            width: 3em;
+            height: 3em;
+            -webkit-user-drag: none;
+        }
+        
+        #bombaklag{
+            overflow-y: scroll;
+            max-height: 679px;
+            width: 300px;
+            background-color: red;
+            
+            
+        }
+        </style>
+</head>
+<body>
+    <header>
+    <nav>
+        <img src="rysunek.svg" alt="logo gry">
+        <a href="stronaglowna.html">Strona główna</a>
+        <a href="samouczek.html">Samouczek</a>
+        <a href="">Bohaterzy</a>
+        <a href="">Bestiariusz</a>
+        <a href="gra.html">Gra</a>
+    </nav>
+    <main>
+        <div id="bombaklag">
+           
+        </div>
+            
+            <canvas class="can"></canvas>
+       
+    </main>
+</header>
+</body>
+</html>

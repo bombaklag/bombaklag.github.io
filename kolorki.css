@@ -20,17 +20,25 @@ main{
     padding: 0.5em;
     display: flex;
     align-items: center;
+    flex-direction: column;
 
 }
 main, div{
     width: 80%;
     
 }
+h1{
+    font-size: 2em;
+    margin: 0;
+    padding: 0;
+}
 p{
+
     color: white;
     font-size: 1em;
     margin: 0;
     padding: 0;
+    
 }
 a{
     text-decoration: none;
