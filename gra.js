@@ -1,5 +1,5 @@
 
-        var can, ctx, tablica = [], myszax = 0, myszay = 0, i = 0, mapa = [{ x: 400, y: 110 }],bombaklag=[], heros = [],pociski=[];
+        var can, ctx, tablica = [], myszax = 0, myszay = 0, i = 0, mapa = [{ x: 400, y: 110 }],bombaklag=[], heros = [],pociski=[],t,myszaxt,myszayt,rysowac;
         document.addEventListener("DOMContentLoaded", function () {
             can = document.querySelector(".can");
             ctx = can.getContext("2d");
@@ -21,16 +21,28 @@
             bombaklag.push(new bohater(100,100,10,100,1))
             bombaklag.push(new bohater(100,100,10,100,1))
             console.log(heros);
-            var t=document.querySelector("#bombaklag")
+            t=document.querySelector("#bombaklag")
             for (let index = 0; index < bombaklag.length; index++) {
                 t.innerHTML+='<div><img src="prezydentduda.jpg"></div>'
                 
                 
             }
-            t.addEventListener("pointerdown",function(e){
-                
+            document.addEventListener('mousemove',function(x){
+                myszaxt=x.x
+                myszayt=x.y
             })
+           t.addEventListener('click',function(){
+            if (!rysowac) {
+                rysowac=true
+                
+            }
+            else if (rysowac) {
+                rysowac=false
+            }
+            
+           })
         })
+        
         class potworek {//przeciwnicy
             constructor(x, y) {
                 this.x = x;
@@ -76,7 +88,7 @@
                 ctx.fillRect(this.x-50, this.y-50, this.hp, 20)
             }
         }
-
+        
         //sojusznicy
         class bohater {
             constructor(x,y,dmg, range,atkspd) {
@@ -162,6 +174,9 @@
             
             var fps = 1000 / (performance.now() - staryczas)
             ctx.clearRect(0, 0, can.width, can.height);
+            if(rysowac){
+                ctx.fillRect(myszaxt-175,myszayt-96,25,25)
+            }
             for (const pojda of tablica) {
                 pojda.update()
                 pojda.render()//renderowanie przeciwnika
@@ -179,8 +194,9 @@
                 szczlanie.render()
             }
             staryczas = performance.now()
+            
             // console.log(fps);
-            requestAnimationFrame(rysowanie)//zeby petla byla nieskonczona
+            requestAnimationFrame(rysowanie)//zeby petla byla nieskonczona\
         }
         function dystans(x1, y1, x2, y2) {
             return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) // pitogaras smiecie
