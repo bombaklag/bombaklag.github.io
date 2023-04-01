@@ -9,9 +9,20 @@ var can,
     heros = [],
     pociski = [],
     t,
+    td,
     myszaxt,
     myszayt,
-    rysowac;
+    rysowac,
+    pieniadze = 400,
+    idek = 0,
+    spawner = [
+        function () {
+            heros.push(new boh1(myszaxt - 25, myszayt - 25, bombaklag[0].damage, bombaklag[0].range, bombaklag[0].atkspd));
+        },
+        function () {
+            heros.push(new boh2(myszaxt - 25, myszayt - 25, bombaklag[1].damage, bombaklag[1].range, bombaklag[1].atkspd));
+        },
+    ];
 document.addEventListener("DOMContentLoaded", function () {
     can = document.querySelector(".can");
     ctx = can.getContext("2d");
@@ -25,34 +36,38 @@ document.addEventListener("DOMContentLoaded", function () {
         tablica.push(new potworek(Math.random() * 500, Math.random() * 500));
         tablica.push(new potworek(Math.random() * 500, Math.random() * 500));
     });
-    console.log(tablica[0].render);
-    console.log(tablica);
-    bombaklag.push(new bohater(100, 100, 10, 100, 1));
-    bombaklag.push(new bohater(100, 100, 10, 100, 1));
-    bombaklag.push(new bohater(100, 100, 10, 100, 1));
-    bombaklag.push(new bohater(100, 100, 10, 100, 1));
-    bombaklag.push(new bohater(100, 100, 10, 100, 1));
-    console.log(heros);
+
+    bombaklag.push(new boh1(100, 100, 10, 100, 0.6));
+    bombaklag.push(new boh2(100, 100, 100, 100, 0.6));
     t = document.querySelector("#bombaklag");
-    for (let index = 0; index < bombaklag.length; index++) {
-        t.innerHTML += '<div><img src="prezydentduda.jpg"></div>';
+
+    for (let index = 1; index < bombaklag.length + 1; index++) {
+        t.innerHTML += '<div><img class="bombaklag" src="prezydentduda.jpg" id="boch:' + index + '"></div>';
     }
+    td = document.querySelectorAll(".bombaklag");
+    td.forEach((el) => {
+        el.addEventListener("click", function () {
+            rysowac = !rysowac;
+            idek = el.id.split(":")[1];
+        });
+    });
+    console.log(td);
     document.addEventListener("mousemove", function (x) {
-        myszaxt = x.x - 175;
-        myszayt = x.y - 96;
+        myszaxt = x.x - can.offsetLeft;
+        myszayt = x.y - can.offsetTop;
     });
-    t.addEventListener("click", function () {
-        if (!rysowac) {
-            rysowac = true;
-        } else if (rysowac) {
-            rysowac = false;
-        }
-    });
+
     can.addEventListener("click", function () {
         if (rysowac) {
-            heros.push(new bohater(myszaxt, myszayt, 10, 1000, 1));
+            for (let index = 0; index < bombaklag.length; index++) {
+                if (bombaklag[index].id == idek && pieniadze >= bombaklag[index].koszt) {
+                    pieniadze -= bombaklag[index].koszt;
+                    spawner[idek - 1].call();
+                }
+            }
         }
         rysowac = false;
+        nacisniecie();
     });
 });
 
@@ -96,7 +111,9 @@ class potworek {
         ctx.fillStyle = "green";
         if (this.hp <= 0) {
             this.hp = 0;
+            pieniadze += 10 + Math.floor(Math.random() * 10);
             tablica.splice(tablica.indexOf(this), 1);
+            console.log("SMIERC TYRANOWI");
         }
         ctx.fillRect(this.x - 50, this.y - 50, this.hp, 20);
     }
@@ -110,6 +127,7 @@ class bohater {
         this.range = range;
         this.atkspd = atkspd;
         this.damage = dmg;
+        this.focused = 0;
         this.czaszawsze = new Date().getTime();
     }
     render() {
@@ -132,6 +150,20 @@ class bohater {
         }
     }
 }
+class boh1 extends bohater {
+    constructor(x, y, dmg, range, atkspd) {
+        super(x, y, dmg, range, atkspd);
+        this.id = 1;
+        this.koszt = 100;
+    }
+}
+class boh2 extends bohater {
+    constructor(x, y, dmg, range, atkspd) {
+        super(x, y, dmg, range, atkspd);
+        this.id = 2;
+        this.koszt = 200;
+    }
+}
 class strzal {
     constructor(x, y, cel, szybkosc, odkogo) {
         this.x = x;
@@ -149,36 +181,47 @@ class strzal {
         ctx.fillStyle = "black";
         ctx.save();
         ctx.translate(this.x + 25, this.y + 25);
-        ctx.rotate(Math.atan2(tablica[this.cel]["y"] - this.y, tablica[this.cel]["x"] - this.x));
+        if (tablica[this.cel]) {
+            ctx.rotate(Math.atan2(tablica[this.cel]["y"] - this.y, tablica[this.cel]["x"] - this.x));
+        }
         ctx.fillRect(25, -5, 10, 10);
         ctx.restore();
     }
     bijatyka() {
-        if (tablica[this.cel].hp <= 0) {
+        if (!tablica[this.cel]) {
             pociski.splice(pociski.indexOf(this), 1);
         } else if (dystans(this.x, this.y, tablica[this.cel].x - 25, tablica[this.cel].y - 25) < 60) {
             console.log("trafiony");
-            if (tablica[this.cel].hp <= 0) {
-                pociski.splice(pociski.indexOf(this), 1);
-            } else {
-                tablica[this.cel].hp -= this.damage;
-                pociski.splice(pociski.indexOf(this), 1);
-            }
+
+            tablica[this.cel].hp -= this.damage;
+
+            pociski.splice(pociski.indexOf(this), 1);
         }
     }
     lot() {
-        this.x += Math.cos(Math.atan2(tablica[this.cel].y - 25 - this.y - 25, tablica[this.cel].x - 25 - this.x - 25)) * this.szybkosc;
-        this.y += Math.sin(Math.atan2(tablica[this.cel].y - 25 - this.y - 25, tablica[this.cel].x - 25 - this.x - 25)) * this.szybkosc;
+        try {
+            this.x += Math.cos(Math.atan2(tablica[this.cel].y - 25 - this.y - 25, tablica[this.cel].x - 25 - this.x - 25)) * this.szybkosc;
+            this.y += Math.sin(Math.atan2(tablica[this.cel].y - 25 - this.y - 25, tablica[this.cel].x - 25 - this.x - 25)) * this.szybkosc;
+        } catch (error) {}
     }
 }
-window.addEventListener("click", function (x) {
-    myszax = x.x - 200;
-    myszay = x.y - 96;
-    if (myszax > 0 && myszax < 1310 && myszay > 0 && myszay < 675 && !rysowac) {
-        mapa.push({x: myszax, y: myszay});
+function nacisniecie() {
+    for (let index = 0; index < heros.length; index++) {
+        if (dystans(myszaxt, myszayt, heros[index].x + 10, heros[index].y + 10) < 50) {
+            console.log("klik");
+        }
     }
+}
 
-    console.log(mapa);
+window.addEventListener("click", function (x) {
+    myszax = x.x - can.offsetLeft;
+    myszay = x.y - can.offsetTop;
+    if (myszax > 0 && myszax < 1310 && myszay > 0 && myszay < 675) {
+        mapa.push({
+            x: myszax,
+            y: myszay,
+        });
+    }
 });
 var c = 0;
 
@@ -188,7 +231,7 @@ function rysowanie() {
     var fps = 1000 / (performance.now() - staryczas);
     ctx.clearRect(0, 0, can.width, can.height);
     if (rysowac) {
-        ctx.fillRect(myszaxt, myszayt, 25, 25);
+        ctx.fillRect(myszaxt - 12.5, myszayt - 12.5, 25, 25);
     }
     for (const pojda of tablica) {
         pojda.update();
@@ -210,7 +253,10 @@ function rysowanie() {
         szczlanie.render();
     }
     staryczas = performance.now();
-
+    ctx.beginPath();
+    ctx.font = "50px Titillium Web black";
+    ctx.fillStyle = "black";
+    ctx.fillText(pieniadze, 10, 60);
     // console.log(fps);
     requestAnimationFrame(rysowanie); //zeby petla byla nieskonczona\
 }
