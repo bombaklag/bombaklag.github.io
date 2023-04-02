@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     t = document.querySelector("#bombaklag");
 
     for (let index = 1; index < bombaklag.length + 1; index++) {
-        t.innerHTML += '<div><img class="bombaklag" src="prezydentduda.jpg" id="boch:' + index + '"></div>';
+        t.innerHTML += '<div><img class="bombaklag" src="bohater' + index + '.png" id="boch:' + index + '"></div>';
     }
     td = document.querySelectorAll(".bombaklag");
     td.forEach((el) => {
