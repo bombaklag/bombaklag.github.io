@@ -17,6 +17,7 @@ var can,
     fala = 0,
     kolko = new Image();
 lewekolko = new Image();
+
 spawner = [
     function () {
         heros.push(new boh1(myszaxt - 25, myszayt - 25, bombaklag[0].damage, bombaklag[0].range, bombaklag[0].atkspd));
@@ -87,7 +88,7 @@ mapa = [
     {x: 25, y: 426},
     {x: 9, y: 426},
 ];
-falowana = [[], [2, 4]];
+falowana = [[], [8]];
 document.addEventListener("DOMContentLoaded", function () {
     can = document.querySelector(".can");
     ctx = can.getContext("2d");
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
     can.height = window.innerHeight * 0.7;
     requestAnimationFrame(rysowanie);
 
-    bombaklag.push(new boh1(100, 100, 10, 100, 0.6));
+    bombaklag.push(new boh1(100, 100, 100, 100, 0.2));
     bombaklag.push(new boh2(100, 100, 100, 100, 0.6));
     bombaklag.push(new boh3(100, 100, 100, 100, 0.6));
     t = document.querySelector("#bombaklag");
@@ -198,7 +199,7 @@ class zolniez extends potworek {
         this.hp = 200;
         this.dotabeli = 0;
         this.maxyhp = 200;
-        this.szybkosc = 5;
+        this.szybkosc = 3;
     }
 }
 class ryba extends potworek {
@@ -322,9 +323,15 @@ function nacisniecie() {
         }
     }
 }
+let datas
 function pusfale(a) {
     for (let i = 0; i < a[0]; i++) {
-        tablica.push(new zolniez(1400, 363));
+        let data=new Date().getTime()
+        if (data-datas>1000*10) {
+            tablica.push(new zolniez(1400, 363));
+            datas=data
+        }
+        
     }
     for (let i = 0; i < a[1]; i++) {
         tablica.push(new ryba(1400, 363));
