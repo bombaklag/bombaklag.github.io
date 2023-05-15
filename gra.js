@@ -3,7 +3,6 @@ var can,
     tablica = [],
     myszax = 0,
     myszay = 0,
-    i = 0,
     bombaklag = [],
     heros = [],
     pociski = [],
@@ -15,9 +14,10 @@ var can,
     pieniadze = 400,
     idek = 0,
     fala = 0,
+    dospawna = [],
+    zycie = 20,
     kolko = new Image();
 lewekolko = new Image();
-
 spawner = [
     function () {
         heros.push(new boh1(myszaxt - 25, myszayt - 25, bombaklag[0].damage, bombaklag[0].range, bombaklag[0].atkspd));
@@ -87,8 +87,10 @@ mapa = [
     {x: 52, y: 426},
     {x: 25, y: 426},
     {x: 9, y: 426},
+    {x: -20, y: 426},
+    {x: -75, y: 426},
 ];
-falowana = [[], [8]];
+falowana = [[], [8, 1]];
 document.addEventListener("DOMContentLoaded", function () {
     can = document.querySelector(".can");
     ctx = can.getContext("2d");
@@ -120,6 +122,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (rysowac) {
             for (let index = 0; index < bombaklag.length; index++) {
                 if (bombaklag[index].id == idek && pieniadze >= bombaklag[index].koszt) {
+                    let imgdata = ctx.getImageData(myszaxt, myszayt, 1, 1);
+                    console.log(imgdata.data[0], imgdata.data[1], imgdata.data[2]);
                     pieniadze -= bombaklag[index].koszt;
                     spawner[idek - 1].call();
                 }
@@ -152,7 +156,8 @@ class potworek {
         this.hp = 100;
         this.maxyhp = this.hp;
         this.dotabeli = 0;
-        this.szybkosc = 5;
+        this.szybkosc = 1;
+        this.bomba = 0;
     }
     render() {
         ctx.save();
@@ -172,15 +177,9 @@ class potworek {
         if (mapa[this.dotabeli]) {
             this.chodzenie();
         }
+        this.uszkodzenie();
     }
 
-    chodzenie() {
-        this.x += Math.cos(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x)) * this.szybkosc;
-        this.y += Math.sin(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x)) * this.szybkosc;
-        if (dystans(this.x, this.y, mapa[this.dotabeli]["x"], mapa[this.dotabeli]["y"]) < 3) {
-            this.dotabeli++;
-        }
-    }
     maxhp() {
         ctx.fillStyle = "red";
         ctx.fillRect(this.x - 50, this.y - 50, this.maxyhp, 20);
@@ -192,6 +191,19 @@ class potworek {
         }
         ctx.fillRect(this.x - 50, this.y - 50, this.hp, 20);
     }
+    chodzenie() {
+        this.x += Math.cos(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x)) * this.szybkosc;
+        this.y += Math.sin(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x)) * this.szybkosc;
+        if (dystans(this.x, this.y, mapa[this.dotabeli]["x"], mapa[this.dotabeli]["y"]) < 3) {
+            this.dotabeli++;
+        }
+    }
+    uszkodzenie() {
+        if (this.dotabeli == mapa.length) {
+            zycie -= this.bomba;
+            tablica.splice(tablica.indexOf(this), 1);
+        }
+    }
 }
 class zolniez extends potworek {
     constructor(x, y) {
@@ -199,7 +211,9 @@ class zolniez extends potworek {
         this.hp = 200;
         this.dotabeli = 0;
         this.maxyhp = 200;
-        this.szybkosc = 3;
+        this.szybkosc = 4;
+        this.spawn = 1;
+        this.bomba = 1;
     }
 }
 class ryba extends potworek {
@@ -210,6 +224,8 @@ class ryba extends potworek {
         this.maxyhp = 500;
         this.dotabeli = 0;
         this.szybkosc = 1;
+        this.spawn = 1;
+        this.bomba = 4;
     }
 }
 
@@ -223,8 +239,6 @@ class bohater {
         this.damage = dmg;
         this.focused = 0;
         this.czaszawsze = new Date().getTime();
-        this.ulewy = 0;
-        this.uprawy = 0;
     }
     render() {
         ctx.fillStyle = "green";
@@ -323,30 +337,38 @@ function nacisniecie() {
         }
     }
 }
-let datas
+
 function pusfale(a) {
     for (let i = 0; i < a[0]; i++) {
-        let data=new Date().getTime()
-        if (data-datas>1000*10) {
-            tablica.push(new zolniez(1400, 363));
-            datas=data
-        }
-        
+        dospawna.push(new zolniez(1400, 363));
     }
     for (let i = 0; i < a[1]; i++) {
-        tablica.push(new ryba(1400, 363));
+        dospawna.push(new ryba(1400, 363));
+    }
+}
+let datas = new Date().getTime();
+function exfali() {
+    let data = new Date().getTime();
+    if (dospawna.length > 0) {
+        let i = dospawna.length - 1;
+        if (data - datas > 1000 * dospawna[i].spawn) {
+            tablica.push(dospawna[i]);
+            dospawna.splice(i, 1);
+            datas = data;
+            i--;
+        }
     }
 }
 window.addEventListener("click", function (x) {
     myszax = x.x - can.offsetLeft;
     myszay = x.y - can.offsetTop;
-    if (myszax > 0 && myszax < 1310 && myszay > 0 && myszay < 675) {
-        // mapa.push({
-        //     x: myszax,
-        //     y: myszay,
-        // });
-        console.log(myszax, myszay);
-    }
+    // if (myszax > 0 && myszax < 1310 && myszay > 0 && myszay < 675) {
+    //     // mapa.push({
+    //     //     x: myszax,
+    //     //     y: myszay,
+    //     // });
+    //     console.log(myszax, myszay);
+    // }
 });
 var c = 0;
 
@@ -377,12 +399,14 @@ function rysowanie() {
             szczlanie.update();
             szczlanie.render();
         }
-
+        exfali();
         ctx.beginPath();
         staryczas = performance.now();
         ctx.font = "50px Titillium Web black";
         ctx.fillStyle = "black";
         ctx.fillText(pieniadze, 10, 60);
+        ctx.fillText(zycie, 150, 60);
+        ctx.fillText(fps.toFixed(0), 10, 120);
         // console.log(fps);
     }
 
