@@ -18,6 +18,9 @@ var can,
     zycie = 20,
     kolko = new Image();
 lewekolko = new Image();
+mapar=new Image();
+rybal=new Image();
+rybap=new Image();
 spawner = [
     function () {
         heros.push(new boh1(myszaxt - 25, myszayt - 25, bombaklag[0].damage, bombaklag[0].range, bombaklag[0].atkspd));
@@ -90,7 +93,59 @@ mapa = [
     {x: -20, y: 426},
     {x: -75, y: 426},
 ];
-falowana = [[], [8, 1]];
+mapa2=[
+    {x: 910, y: 87},    
+    {x: 924, y: 118},
+    {x: 948, y: 161},
+    {x: 966, y: 200},
+    {x: 981, y: 251},
+    {x: 999, y: 294},
+    {x: 1008, y: 342},
+    {x: 1005, y: 387},
+    {x: 995, y: 429},
+    {x: 986, y: 445},
+    {x: 977, y: 463},
+    {x: 963, y: 486},
+    {x: 948, y: 505},
+    {x: 938, y: 519},
+    {x: 920, y: 532},
+    {x: 896, y: 547},
+    {x: 874, y: 553},
+    {x: 846, y: 556},
+    {x: 827, y: 552},
+    {x: 800, y: 548},
+    {x: 772, y: 547},
+    {x: 750, y: 541},
+    {x: 726, y: 531},
+    {x: 703, y: 526},
+    {x: 680, y: 519},
+    {x: 655, y: 506},
+    {x: 628, y: 493},
+    {x: 555, y: 468},
+    {x: 528, y: 460},
+    {x: 499, y: 449},
+    {x: 468, y: 437},
+    {x: 443, y: 426},
+    {x: 414, y: 417},
+    {x: 384, y: 403},
+    {x: 353, y: 394},
+    {x: 323, y: 388},
+    {x: 292, y: 389},
+    {x: 263, y: 397},
+    {x: 232, y: 407},
+    {x: 204, y: 417},
+    {x: 179, y: 419},
+    {x: 152, y: 424},
+    {x: 126, y: 427},
+    {x: 99, y: 428},
+    {x: 72, y: 428},
+    {x: 52, y: 426},
+    {x: 25, y: 426},
+    {x: 9, y: 426},
+    {x: -20, y: 426},
+    {x: -75, y: 426}
+];
+falowana = [[], [8, 1],[5,6],[8,10]];
 document.addEventListener("DOMContentLoaded", function () {
     can = document.querySelector(".can");
     ctx = can.getContext("2d");
@@ -146,6 +201,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     kolko.src = "tusk.jpg";
     lewekolko.src = "tusklewy.jpg";
+    mapar.src="mapa.png"
+    rybal.src="ryba.jpg"
+    rybap.src="rybap.jpg"
 });
 
 class potworek {
@@ -158,15 +216,18 @@ class potworek {
         this.dotabeli = 0;
         this.szybkosc = 1;
         this.bomba = 0;
+        this.textp=kolko
+        this.textl=lewekolko
+        this.sciezka=mapa
     }
     render() {
         ctx.save();
         ctx.translate(this.x, this.y);
-        if (mapa[this.dotabeli]) {
-            if (Math.floor(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x) * (180 / Math.PI)) < 90 && Math.floor(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x) * (180 / Math.PI)) > -90) {
-                ctx.drawImage(kolko, -25, -25, 100, 100);
+        if (this.sciezka[this.dotabeli]) {
+            if (Math.floor(Math.atan2(this.sciezka[this.dotabeli]["y"] - this.y, this.sciezka[this.dotabeli]["x"] - this.x) * (180 / Math.PI)) < 90 && Math.floor(Math.atan2(this.sciezka[this.dotabeli]["y"] - this.y, this.sciezka[this.dotabeli]["x"] - this.x) * (180 / Math.PI)) > -90) {
+                ctx.drawImage(this.textp, -25, -25, 100, 100);
             } else {
-                ctx.drawImage(lewekolko, -25, -25, 100, 100);
+                ctx.drawImage(this.textl, -25, -25, 100, 100);
             }
         }
 
@@ -174,7 +235,7 @@ class potworek {
         this.maxhp();
     }
     update() {
-        if (mapa[this.dotabeli]) {
+        if (this.sciezka[this.dotabeli]) {
             this.chodzenie();
         }
         this.uszkodzenie();
@@ -182,24 +243,24 @@ class potworek {
 
     maxhp() {
         ctx.fillStyle = "red";
-        ctx.fillRect(this.x - 50, this.y - 50, this.maxyhp, 20);
+        ctx.fillRect(this.x+25-this.maxyhp*0.5, this.y -50, this.maxyhp, 20);
         ctx.fillStyle = "green";
         if (this.hp <= 0) {
             this.hp = 0;
             pieniadze += 10 + Math.floor(Math.random() * 10);
             tablica.splice(tablica.indexOf(this), 1);
         }
-        ctx.fillRect(this.x - 50, this.y - 50, this.hp, 20);
+        ctx.fillRect(this.x+25-this.maxyhp*0.5, this.y - 50, this.hp, 20);
     }
     chodzenie() {
-        this.x += Math.cos(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x)) * this.szybkosc;
-        this.y += Math.sin(Math.atan2(mapa[this.dotabeli]["y"] - this.y, mapa[this.dotabeli]["x"] - this.x)) * this.szybkosc;
-        if (dystans(this.x, this.y, mapa[this.dotabeli]["x"], mapa[this.dotabeli]["y"]) < 3) {
+        this.x += Math.cos(Math.atan2(this.sciezka[this.dotabeli]["y"] - this.y, this.sciezka[this.dotabeli]["x"] - this.x)) * this.szybkosc;
+        this.y += Math.sin(Math.atan2(this.sciezka[this.dotabeli]["y"] - this.y, this.sciezka[this.dotabeli]["x"] - this.x)) * this.szybkosc;
+        if (dystans(this.x, this.y, this.sciezka[this.dotabeli]["x"], this.sciezka[this.dotabeli]["y"]) < 3) {
             this.dotabeli++;
         }
     }
     uszkodzenie() {
-        if (this.dotabeli == mapa.length) {
+        if (this.dotabeli == this.sciezka.length) {
             zycie -= this.bomba;
             tablica.splice(tablica.indexOf(this), 1);
         }
@@ -214,6 +275,7 @@ class zolniez extends potworek {
         this.szybkosc = 4;
         this.spawn = 1;
         this.bomba = 1;
+        this.sciezka=mapa
     }
 }
 class ryba extends potworek {
@@ -226,6 +288,9 @@ class ryba extends potworek {
         this.szybkosc = 1;
         this.spawn = 1;
         this.bomba = 4;
+        this.textl=rybal
+        this.textp=rybap
+        this.sciezka=mapa2
     }
 }
 
@@ -343,7 +408,7 @@ function pusfale(a) {
         dospawna.push(new zolniez(1400, 363));
     }
     for (let i = 0; i < a[1]; i++) {
-        dospawna.push(new ryba(1400, 363));
+        dospawna.push(new ryba(910, 87));
     }
 }
 let datas = new Date().getTime();
@@ -363,11 +428,11 @@ window.addEventListener("click", function (x) {
     myszax = x.x - can.offsetLeft;
     myszay = x.y - can.offsetTop;
     // if (myszax > 0 && myszax < 1310 && myszay > 0 && myszay < 675) {
-    //     // mapa.push({
+    //     // mapa2.push({
     //     //     x: myszax,
     //     //     y: myszay,
     //     // });
-    //     console.log(myszax, myszay);
+    //     // console.log(mapa2);
     // }
 });
 var c = 0;
@@ -377,10 +442,10 @@ var staryczas = 0;
 //funkcja co rysuje
 
 function rysowanie() {
-    if (performance.now() - staryczas > 1000 / 60) {
+    if (performance.now() - staryczas > 1000 / 1000) {
         var fps = 1000 / (performance.now() - staryczas);
         ctx.clearRect(0, 0, can.width, can.height);
-
+        ctx.drawImage(mapar,0,0, can.width, can.height)
         if (rysowac) {
             ctx.fillRect(myszaxt - 12.5, myszayt - 12.5, 25, 25);
         }
