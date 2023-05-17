@@ -94,21 +94,18 @@
             background-color: red;
         }
 
-        .can {
-           
-            position: relative;
-        }
+
 
         .ulepszenia {
             background-color: #293241;
             border: #53d4ff solid 3px;
             color: white;
-            font-size: 0.5em;
+            font-size: 0.7em;
             margin: 0;
             padding: 0;
             text-align: center;
-            width: 100%;
-
+            width: 14%;
+            height: 25%;
             overflow-y: scroll;
         }
 
@@ -128,8 +125,8 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            width: 100%;
 
+            height: 30%;
 
         }
 
@@ -144,13 +141,36 @@
             text-align: center;
             width: 100%;
         }
+
+        #postac {
+            position: absolute;
+            top: 10%;
+            right: 7%;
+        }
+
+        .nedypiel {
+            display: flex;
+        }
+
+        .pierzyna {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pojduwina {
+            margin-top: 10px;
+        }
+
+        .staty {
+            font-size: 1cm;
+        }
     </style>
 </head>
 
 <body>
 
     <nav>
-        <img src="rysunek.svg" alt="logo gry" id="logo">
+        <img src="img/rysunek.svg" alt="logo gry" id="logo">
         <a href="stronaglowna.html">Strona główna</a>
         <a href="samouczek.html">Samouczek</a>
         <a href="">Bohaterzy</a>
@@ -164,10 +184,22 @@
         <canvas class="can"></canvas>
         <div id="dofali">
             <span id="nfala">Numer rundy: 0</span>
-            <button id="fala">tak dosc</button>
+            <button id="fala">Następna runda</button>
         </div>
     </div>
-
+    <span id="postac" style="visibility: hidden;">joł</span>
+    <button class="ulepszenia" style="position:absolute; right: 5px;top: 22%;display:none ;">Lorem ipsum dolor, sit amet
+        consectetur
+        adipisicing elit. Excepturi voluptatibus voluptas
+        iste repudiandae
+        molestiae consectetur sapiente, pariatur nemo eum, ipsum distinctio dolore eius ad. Reiciendis eius tempora
+        expedita ut perferendis.</button>
+    <button class="ulepszenia" style="position: absolute; right:5px;top:48%;display: none;">Lorem ipsum dolor sit, amet
+        consectetur
+        adipisicing elit. Nostrum dolor cupiditate natus
+        impedit commodi
+        esse nesciunt quae repellat! Odit, fugiat repellendus. Dolorem aliquam aliquid blanditiis temporibus autem
+        perferendis quo nam.</button>
 </body>
 
 </html>
