@@ -9,15 +9,17 @@ var can,
     t,
     staty,
     td,
-    myszaxt,
-    myszayt,
+    myszaxt=0,
+    myszayt=0,
     rysowac,
-    pieniadze = 400,
+    pieniadze = 400000,
     idek = 0,
     fala = 0,
     dospawna = [],
     zycie = 20,
+    kwadraciok,
     nazwachampa,
+    imgdata,
     kolko = new Image();
 lewekolko = new Image();
 mapar = new Image();
@@ -147,7 +149,6 @@ document.addEventListener("DOMContentLoaded", function () {
     can.width = window.innerWidth * 0.7;
     can.height = window.innerHeight * 0.7;
     requestAnimationFrame(rysowanie);
-
     bombaklag.push(new boh1(100, 100, 100, 100, 0.2));
     bombaklag.push(new boh2(100, 100, 150, 100, 0.6));
     bombaklag.push(new boh3(100, 100, 50, 100, 0.6));
@@ -164,8 +165,9 @@ document.addEventListener("DOMContentLoaded", function () {
     td = document.querySelectorAll(".pojduwina");
     td.forEach((el) => {
         el.addEventListener("click", function () {
-            rysowac = !rysowac;
+            kwadraciok = !kwadraciok;
             idek = el.id.split(":")[1];
+
         });
     });
 
@@ -175,35 +177,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     can.addEventListener("click", function () {
-        console.log(rysowac);
         if (rysowac) {
+            
             for (let index = 0; index < bombaklag.length; index++) {
                 if (bombaklag[index].id == idek && pieniadze >= bombaklag[index].koszt) {
                     if (heros.length == 0) {
                         pieniadze -= bombaklag[index].koszt;
                         spawner[idek - 1].call();
                     } else {
+                   
                         let dlugo = heros.length;
                         let przejscie = 0;
                         for (let i = 0; i < dlugo; i++) {
-                            heros[i].focused = 0;
                             if (dystans(myszaxt, myszayt, heros[i].x + 25, heros[i].y + 25) > 60) {
                                 przejscie++;
                             }
                         }
-                        let imgdata = ctx.getImageData(myszaxt, myszayt, 1, 1);
                         if (przejscie == dlugo) {
-                            console.log(imgdata.data[1]);
+                            console.log(imgdata.data[0],imgdata.data[1],imgdata.data[2]);
+                            console.log(kolorowy(95,170,80,imgdata.data[0],imgdata.data[1],imgdata.data[2]));
                             pieniadze -= bombaklag[index].koszt;
                             spawner[idek - 1].call();
+                            
                         }
+                        
+                        console.log(rysowac);
                     }
-                    rysowac = false;
+                    
                 }
             }
         }
         nacisniecie();
-        rysowac = false;
+        kwadraciok=false
+      
     });
     let guzik = document.querySelector("#fala");
     let numerf = document.querySelector("#nfala");
@@ -214,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             pusfale(falowana[fala]);
 
-            console.log(tablica);
+            
         }
     });
     nazwachampa = document.querySelector("#postac");
@@ -417,14 +423,13 @@ class strzal {
 }
 function nacisniecie() {
     for (let index = 0; index < heros.length; index++) {
-        if (dystans(myszaxt, myszayt, heros[index].x + 25, heros[index].y + 25) < 25) {
-            console.log(rysowac);
+        if (dystans(myszaxt, myszayt, heros[index].x + 25, heros[index].y + 25) < 30) {
             heros[index].focused = 1;
             nazwachampa.innerText = heros[index].name;
             nazwachampa.setAttribute("style", "visibility:visible;");
             console.log("szmaciarz");
         } else {
-            console.log(rysowac);
+            
             heros[index].focused = 0;
             nazwachampa.setAttribute("style", "visibility:hidden;");
         }
@@ -470,13 +475,21 @@ var staryczas = 0;
 //funkcja co rysuje
 
 function rysowanie() {
-    if (performance.now() - staryczas > 1000 / 60) {
+    if (performance.now() - staryczas > 1000 / 1000) {
+        
         var fps = 1000 / (performance.now() - staryczas);
         ctx.clearRect(0, 0, can.width, can.height);
+        
         ctx.drawImage(mapar, 0, 0, can.width, can.height);
+       rysowac=kwadraciok
         if (rysowac) {
+            
+            imgdata=ctx.getImageData(myszaxt,myszayt,1,1)
+            console.log(imgdata.data[0],imgdata.data[1],imgdata.data[2]);
             ctx.fillRect(myszaxt - 12.5, myszayt - 12.5, 25, 25);
         }
+           
+        
         for (const pojda of tablica) {
             pojda.update();
             pojda.render(); //renderowanie przeciwnika
@@ -492,6 +505,8 @@ function rysowanie() {
             szczlanie.update();
             szczlanie.render();
         }
+        
+        
         exfali();
         ctx.beginPath();
         staryczas = performance.now();
@@ -507,4 +522,7 @@ function rysowanie() {
 }
 function dystans(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)); // pitogaras smiecie
+}
+function kolorowy(r1,g1,b1,r2,g2,b2) {
+    return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))
 }
