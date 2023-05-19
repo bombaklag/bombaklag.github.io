@@ -107,6 +107,19 @@
             width: 14%;
             height: 25%;
             overflow-y: scroll;
+            visibility: hidden;
+        }
+
+        #ugora {
+            top: 22%;
+            right: 5px;
+            position: absolute;
+        }
+
+        #udol {
+            top: 48%;
+            position: absolute;
+            right: 5px;
         }
 
         #dofali {
@@ -145,7 +158,7 @@
         #postac {
             position: absolute;
             top: 10%;
-            right: 7%;
+            right: 3.5em;
         }
 
         .nedypiel {
@@ -162,7 +175,15 @@
         }
 
         .staty {
-            font-size: 1cm;
+            font-size: 0.8cm;
+        }
+
+        #statyt {
+            position: absolute;
+            top: 14%;
+            right: 10px;
+            font-size: 18px;
+            visibility: hidden;
         }
     </style>
 </head>
@@ -188,13 +209,14 @@
         </div>
     </div>
     <span id="postac" style="visibility: hidden;">joł</span>
-    <button class="ulepszenia" style="position:absolute; right: 5px;top: 22%;display:none ;">Lorem ipsum dolor, sit amet
+    <span id="statyt"></span>
+    <button class="ulepszenia" id="ugora">Lorem ipsum dolor, sit amet
         consectetur
         adipisicing elit. Excepturi voluptatibus voluptas
         iste repudiandae
         molestiae consectetur sapiente, pariatur nemo eum, ipsum distinctio dolore eius ad. Reiciendis eius tempora
         expedita ut perferendis.</button>
-    <button class="ulepszenia" style="position: absolute; right:5px;top:48%;display: none;">Lorem ipsum dolor sit, amet
+    <button class="ulepszenia" id="udol">Lorem ipsum dolor sit, amet
         consectetur
         adipisicing elit. Nostrum dolor cupiditate natus
         impedit commodi

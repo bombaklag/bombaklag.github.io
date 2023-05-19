@@ -9,8 +9,12 @@ var can,
     t,
     staty,
     td,
-    myszaxt=0,
-    myszayt=0,
+    nazwachampa,
+    statyt,
+    udol,
+    ugora,
+    myszaxt = 0,
+    myszayt = 0,
     rysowac,
     pieniadze = 400000,
     idek = 0,
@@ -149,12 +153,12 @@ document.addEventListener("DOMContentLoaded", function () {
     can.width = window.innerWidth * 0.7;
     can.height = window.innerHeight * 0.7;
     requestAnimationFrame(rysowanie);
-    bombaklag.push(new boh1(100, 100, 100, 100, 0.2));
+    bombaklag.push(new boh1(100, 100, 100, 1000, 0.2));
     bombaklag.push(new boh2(100, 100, 150, 100, 0.6));
     bombaklag.push(new boh3(100, 100, 50, 100, 0.6));
     t = document.querySelector("#bombaklag");
     for (let index = 1; index < bombaklag.length + 1; index++) {
-        t.innerHTML += '<div class="nedypiel"><img class="pojduwina" src="img/bohater' + index + '.png" id="boch:' + index + '"><div class="pierzyna"></div></div>';
+        t.innerHTML += '<div class="nedypiel"><img class="pojduwina" alt="" src="img/bohater' + index + '.webp" id="boch:' + index + '"><div class="pierzyna"></div></div>';
         staty = document.querySelectorAll(".pierzyna");
         staty[index - 1].innerHTML += '<span class="staty">' + bombaklag[index - 1].koszt + "</span>";
         staty[index - 1].innerHTML += '<span class="staty">' + bombaklag[index - 1].damage + "</span>";
@@ -167,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function () {
         el.addEventListener("click", function () {
             kwadraciok = !kwadraciok;
             idek = el.id.split(":")[1];
-
         });
     });
 
@@ -178,14 +181,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     can.addEventListener("click", function () {
         if (rysowac) {
-            
             for (let index = 0; index < bombaklag.length; index++) {
                 if (bombaklag[index].id == idek && pieniadze >= bombaklag[index].koszt) {
-                    if (heros.length == 0) {
+                    if (heros.length == 0 && kolorowy(95, 170, 80, imgdata.data[0], imgdata.data[1], imgdata.data[2]) < 40) {
                         pieniadze -= bombaklag[index].koszt;
                         spawner[idek - 1].call();
                     } else {
-                   
                         let dlugo = heros.length;
                         let przejscie = 0;
                         for (let i = 0; i < dlugo; i++) {
@@ -193,23 +194,16 @@ document.addEventListener("DOMContentLoaded", function () {
                                 przejscie++;
                             }
                         }
-                        if (przejscie == dlugo) {
-                            console.log(imgdata.data[0],imgdata.data[1],imgdata.data[2]);
-                            console.log(kolorowy(95,170,80,imgdata.data[0],imgdata.data[1],imgdata.data[2]));
+                        if (przejscie == dlugo && kolorowy(95, 170, 80, imgdata.data[0], imgdata.data[1], imgdata.data[2]) < 40) {
                             pieniadze -= bombaklag[index].koszt;
                             spawner[idek - 1].call();
-                            
                         }
-                        
-                        console.log(rysowac);
                     }
-                    
                 }
             }
         }
         nacisniecie();
-        kwadraciok=false
-      
+        kwadraciok = false;
     });
     let guzik = document.querySelector("#fala");
     let numerf = document.querySelector("#nfala");
@@ -219,14 +213,29 @@ document.addEventListener("DOMContentLoaded", function () {
             numerf.innerText = "Numer rundy: " + fala;
 
             pusfale(falowana[fala]);
-
-            
+        }
+    });
+    ugora = document.querySelector("#ugora");
+    udol = document.querySelector("#udol");
+    ugora.addEventListener("click", function () {
+        for (let i = 0; i < heros.length; i++) {
+            if (heros[i].focused == 1) {
+                heros[i].gorneulepszanie();
+            }
+        }
+    });
+    udol.addEventListener("click", function () {
+        for (let i = 0; i < heros.length; i++) {
+            if (heros[i].focused == 1) {
+                heros[i].dolneulepszanie();
+            }
         }
     });
     nazwachampa = document.querySelector("#postac");
+    statyt = document.querySelector("#statyt");
     kolko.src = "img/tusk.jpg";
     lewekolko.src = "img/tusklewy.jpg";
-    mapar.src = "img/mapa.png";
+    mapar.src = "img/mapa.webp";
     rybal.src = "img/ryba.jpg";
     rybap.src = "img/rybap.jpg";
 });
@@ -244,6 +253,8 @@ class potworek {
         this.textp = kolko;
         this.textl = lewekolko;
         this.sciezka = mapa;
+        this.armor = 0;
+        this.mresist = 0;
     }
     render() {
         ctx.save();
@@ -301,6 +312,8 @@ class zolniez extends potworek {
         this.spawn = 1;
         this.bomba = 1;
         this.sciezka = mapa;
+        this.armor = 0.5;
+        this.mresist = 0.5;
     }
 }
 class ryba extends potworek {
@@ -316,6 +329,8 @@ class ryba extends potworek {
         this.textl = rybal;
         this.textp = rybap;
         this.sciezka = mapa2;
+        this.armor = 1;
+        this.mresist = 1;
     }
 }
 
@@ -329,6 +344,9 @@ class bohater {
         this.damage = dmg;
         this.focused = 0;
         this.czaszawsze = new Date().getTime();
+        this.ugorny = 0;
+        this.udolny = 0;
+        this.velocity = 6;
     }
     render() {
         ctx.fillStyle = "green";
@@ -350,10 +368,48 @@ class bohater {
             if (dystans(this.x, this.y, tablica[index].x, tablica[index].y) < this.range) {
                 let czas = new Date().getTime();
                 if (czas - this.czaszawsze > this.atkspd * 1000) {
-                    pociski.push(new strzal(this.x, this.y, index, 6, this));
+                    pociski.push(new strzal(this.x, this.y, index, this.velocity, this));
                     this.czaszawsze = czas;
                 }
             }
+        }
+    }
+    gorneulepszanie() {
+        if (this.ugorny == 3) {
+            this.ulepszenie4();
+            this.ugorny = 4;
+            console.log("max");
+        }
+        if (this.ugorny == 2) {
+            this.ulepszenie3();
+            this.ugorny = 3;
+        }
+        if (this.ugorny == 1) {
+            this.ulepszenie2();
+            this.ugorny = 2;
+        }
+        if (this.ugorny == 0) {
+            this.ulepszenie1();
+            this.ugorny = 1;
+        }
+    }
+
+    dolneulepszanie() {
+        if (this.udolny == 0) {
+            this.ulepszenie1d();
+            this.udolny = 1;
+        }
+        if (this.udolny == 1) {
+            this.ulepszenie2d();
+            this.udolny = 2;
+        }
+        if (this.udolny == 2) {
+            this.ulepszenie3d();
+            this.udolny = 3;
+        }
+        if (this.udolny == 3) {
+            this.ulepszenie4d();
+            this.udolny = 4;
         }
     }
 }
@@ -363,7 +419,24 @@ class boh1 extends bohater {
         this.id = 1;
         this.koszt = 100;
         this.name = "necoarc";
+        this.velocity = 30;
     }
+    ulepszenie1() {
+        this.damage += 10;
+    }
+    ulepszenie2() {
+        this.damage += 10;
+    }
+    ulepszenie3() {
+        this.damage += 10;
+    }
+    ulepszenie4() {
+        this.damage += 10;
+    }
+    ulepszenie1d() {}
+    ulepszenie2d() {}
+    ulepszenie3d() {}
+    ulepszenie4d() {}
 }
 class boh2 extends bohater {
     constructor(x, y, dmg, range, atkspd) {
@@ -371,6 +444,7 @@ class boh2 extends bohater {
         this.id = 2;
         this.koszt = 200;
         this.name = "obama";
+        this.velocity = 20;
     }
 }
 class boh3 extends bohater {
@@ -409,7 +483,9 @@ class strzal {
         if (!tablica[this.cel]) {
             pociski.splice(pociski.indexOf(this), 1);
         } else if (dystans(this.x, this.y, tablica[this.cel].x - 25, tablica[this.cel].y - 25) < 50) {
-            tablica[this.cel].hp -= this.damage;
+            console.log(this.damage);
+            console.log(this.damage * tablica[this.cel].armor);
+            tablica[this.cel].hp -= this.damage * tablica[this.cel].armor;
 
             pociski.splice(pociski.indexOf(this), 1);
         }
@@ -422,16 +498,25 @@ class strzal {
     }
 }
 function nacisniecie() {
+    let przejscie = 0;
     for (let index = 0; index < heros.length; index++) {
         if (dystans(myszaxt, myszayt, heros[index].x + 25, heros[index].y + 25) < 30) {
             heros[index].focused = 1;
+            przejscie = 1;
             nazwachampa.innerText = heros[index].name;
+            statyt.innerText = "dmg: " + heros[index].damage + " range: " + heros[index].range + " atkspd: " + heros[index].atkspd;
             nazwachampa.setAttribute("style", "visibility:visible;");
-            console.log("szmaciarz");
+            ugora.setAttribute("style", "visibility:visible;");
+            udol.setAttribute("style", "visibility:visible;");
+            statyt.setAttribute("style", "visibility:visible;");
         } else {
-            
+            if (przejscie == 0) {
+                nazwachampa.setAttribute("style", "visibility:hidden;");
+                ugora.setAttribute("style", "visibility:hidden;");
+                udol.setAttribute("style", "visibility:hidden;");
+                statyt.setAttribute("style", "visibility:hidden;");
+            }
             heros[index].focused = 0;
-            nazwachampa.setAttribute("style", "visibility:hidden;");
         }
     }
 }
@@ -475,21 +560,17 @@ var staryczas = 0;
 //funkcja co rysuje
 
 function rysowanie() {
-    if (performance.now() - staryczas > 1000 / 1000) {
-        
+    if (performance.now() - staryczas > 1000 / 60) {
         var fps = 1000 / (performance.now() - staryczas);
         ctx.clearRect(0, 0, can.width, can.height);
-        
+
         ctx.drawImage(mapar, 0, 0, can.width, can.height);
-       rysowac=kwadraciok
+        rysowac = kwadraciok;
         if (rysowac) {
-            
-            imgdata=ctx.getImageData(myszaxt,myszayt,1,1)
-            console.log(imgdata.data[0],imgdata.data[1],imgdata.data[2]);
+            imgdata = ctx.getImageData(myszaxt, myszayt, 1, 1);
             ctx.fillRect(myszaxt - 12.5, myszayt - 12.5, 25, 25);
         }
-           
-        
+
         for (const pojda of tablica) {
             pojda.update();
             pojda.render(); //renderowanie przeciwnika
@@ -505,8 +586,7 @@ function rysowanie() {
             szczlanie.update();
             szczlanie.render();
         }
-        
-        
+
         exfali();
         ctx.beginPath();
         staryczas = performance.now();
@@ -523,6 +603,6 @@ function rysowanie() {
 function dystans(x1, y1, x2, y2) {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)); // pitogaras smiecie
 }
-function kolorowy(r1,g1,b1,r2,g2,b2) {
-    return Math.sqrt(Math.pow(r1-r2,2)+Math.pow(g1-g2,2)+Math.pow(b1-b2,2))
+function kolorowy(r1, g1, b1, r2, g2, b2) {
+    return Math.sqrt(Math.pow(r1 - r2, 2) + Math.pow(g1 - g2, 2) + Math.pow(b1 - b2, 2));
 }
