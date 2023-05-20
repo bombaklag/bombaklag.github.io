@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 
 <head>
     <meta charset="UTF-8">
@@ -83,7 +83,10 @@
         div,
         img {
             -webkit-user-drag: none;
-            -khtml-user-drag: none;
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
             width: 3em;
         }
 
@@ -106,7 +109,6 @@
             text-align: center;
             width: 14%;
             height: 25%;
-            overflow-y: scroll;
             visibility: hidden;
         }
 
@@ -163,6 +165,7 @@
 
         .nedypiel {
             display: flex;
+            width: 1%;
         }
 
         .pierzyna {
@@ -172,6 +175,8 @@
 
         .pojduwina {
             margin-top: 10px;
+            height: 350px;
+            width: 200;
         }
 
         .staty {
@@ -184,6 +189,12 @@
             right: 10px;
             font-size: 18px;
             visibility: hidden;
+        }
+
+        .statuwinki {
+            height: 25px;
+            width: 25px;
+            margin: 0;
         }
     </style>
 </head>
@@ -210,18 +221,8 @@
     </div>
     <span id="postac" style="visibility: hidden;">joł</span>
     <span id="statyt"></span>
-    <button class="ulepszenia" id="ugora">Lorem ipsum dolor, sit amet
-        consectetur
-        adipisicing elit. Excepturi voluptatibus voluptas
-        iste repudiandae
-        molestiae consectetur sapiente, pariatur nemo eum, ipsum distinctio dolore eius ad. Reiciendis eius tempora
-        expedita ut perferendis.</button>
-    <button class="ulepszenia" id="udol">Lorem ipsum dolor sit, amet
-        consectetur
-        adipisicing elit. Nostrum dolor cupiditate natus
-        impedit commodi
-        esse nesciunt quae repellat! Odit, fugiat repellendus. Dolorem aliquam aliquid blanditiis temporibus autem
-        perferendis quo nam.</button>
+    <button class="ulepszenia" id="ugora"></button>
+    <button class="ulepszenia" id="udol"></button>
 </body>
 
 </html>
