@@ -13,7 +13,7 @@ background-color: #293241;
 height: 3em;
 display: flex;
 }
-main{
+.glownie{
     background-color: #3d5a80;
    
     margin-left: 1em;
@@ -53,4 +53,20 @@ a:hover{
 img{
     width: 3em;
     height: 3em;
+}
+@media screen and (max-width: 800px) {
+    nav {
+        height: 5em;
+        width: 100%;
+    }
+
+    .logo {
+        width: 5em;
+        height: 5em;
+    }
+    .glownie{
+        
+        width: 100%;
+      
+    }
 }

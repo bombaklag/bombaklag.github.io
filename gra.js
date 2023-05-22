@@ -16,7 +16,7 @@ var can,
     myszaxt = 0,
     myszayt = 0,
     rysowac,
-    pieniadze = 4000,
+    pieniadze = 1000,
     idek = 0,
     fala = 0,
     dospawna = [],
@@ -31,6 +31,32 @@ rybal = new Image();
 rybap = new Image();
 pieniazki = new Image();
 serc = new Image();
+nekoark = new Image();
+sakuya = new Image();
+rozbujnik = new Image();
+rozbujnikp = new Image();
+cirno = new Image();
+amogus = new Image();
+amogusp = new Image();
+czarny = new Image();
+czarnyp = new Image();
+jajojajo = new Image();
+jajojajol = new Image();
+joniw = new Image();
+joniwl = new Image();
+niewiem = new Image();
+niewiemp = new Image();
+pjonk = new Image();
+pjonkp = new Image();
+rybson = new Image();
+rybsonl = new Image();
+rycerzyk = new Image();
+rycerzykp = new Image();
+wulf = new Image();
+wulfp = new Image();
+kulaognia = new Image();
+pigula = new Image();
+noz = new Image();
 spawner = [
     function () {
         heros.push(new boh1(myszaxt - 25, myszayt - 25, bombaklag[0].damage, bombaklag[0].range, bombaklag[0].atkspd));
@@ -148,16 +174,16 @@ mapa2 = [
     {x: -20, y: 426},
     {x: -75, y: 426},
 ];
-falowana = [[], [8, 1], [5, 6], [8, 10]];
+falowana = [[], [5, 0, 0, 0, 0, 0, 0, 0, 0, 0], [4, 1, 0, 0, 0, 0, 0, 0, 0, 0], [6, 2, 1, 1, 0, 3, 0, 2, 0, 0], [3, 3, 2, 0, 0, 0, 0, 0, 0, 0], [4, 5, 1, 1, 4, 1, 1, 1, 0, 0], [5, 9, 2, 1, 2, 3, 1, 1, 0, 0], [9, 2, 3, 3, 7, 2, 1, 1, 1, 1], [2, 8, 1, 1, 5, 6, 3, 5, 2, 2], [10, 2, 5, 7, 3, 2, 2, 2, 2, 2], [10, 10, 10, 10, 10, 10, 10, 10, 10, 10], []];
 document.addEventListener("DOMContentLoaded", function () {
     can = document.querySelector(".can");
     ctx = can.getContext("2d");
     can.width = window.innerWidth * 0.7;
     can.height = window.innerHeight * 0.7;
     requestAnimationFrame(rysowanie);
-    bombaklag.push(new boh1(100, 100, 15, 100, 0.5));
-    bombaklag.push(new boh2(100, 100, 150, 100, 0.6));
-    bombaklag.push(new boh3(100, 100, 50, 100, 0.6));
+    bombaklag.push(new boh1(100, 100, 15, 140, 0.5));
+    bombaklag.push(new boh2(100, 100, 30, 130, 0.8));
+    bombaklag.push(new boh3(100, 100, 25, 120, 0.4));
     t = document.querySelector("#bombaklag");
     for (let index = 1; index < bombaklag.length + 1; index++) {
         t.innerHTML += '<div class="nedypiel"><img class="pojduwina" alt="" src="img/bohater' + index + '.webp" id="boch:' + index + '"><div class="pierzyna"></div></div>';
@@ -209,12 +235,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     let guzik = document.querySelector("#fala");
     let numerf = document.querySelector("#nfala");
+
     guzik.addEventListener("click", function () {
         if (tablica.length == 0 && dospawna.length == 0) {
-            fala++;
-            numerf.innerText = "Numer rundy: " + fala;
-
-            pusfale(falowana[fala]);
+            if (fala == 10) {
+                win.style.visibility = "visible";
+                rysowac = false;
+                tablica = [];
+                heros = [];
+                dospawna = [];
+                pociski = [];
+            } else {
+                fala++;
+                numerf.innerText = "Numer rundy: " + fala;
+                pieniadze += 200;
+                pusfale(falowana[fala]);
+            }
         }
     });
     ugora = document.querySelector("#ugora");
@@ -235,13 +271,64 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     nazwachampa = document.querySelector("#postac");
     statyt = document.querySelector("#statyt");
-    kolko.src = "img/tusk.webp";
-    lewekolko.src = "img/tusklewy.webp";
+    let koniec = document.querySelector("#koniec");
+    let statyfali = document.querySelector("#statyfali");
+    let reset = document.querySelector("#reset");
+    reset.addEventListener("click", function () {
+        koniec.style.visibility = "hidden";
+        statyfali.style.visibility = "hidden";
+
+        zycie = 20;
+        pieniadze = 1000;
+        fala = 0;
+        numerf.innerText = "Numer rundy: " + fala;
+        tablica = [];
+        heros = [];
+        dospawna = [];
+        pociski = [];
+    });
+    let win = document.querySelector("#win");
+    let winreset = document.querySelector("#winreset");
+    winreset.addEventListener("click", function () {
+        win.style.visibility = "hidden";
+        zycie = 20;
+        pieniadze = 1000;
+        fala = 0;
+        tablica = [];
+        heros = [];
+        dospawna = [];
+        pociski = [];
+    });
+
     mapar.src = "img/mapa.webp";
-    rybal.src = "img/ryba.jpg";
-    rybap.src = "img/rybap.jpg";
     pieniazki.src = "img/mamona.webp";
     serc.src = "img/serc.webp";
+    nekoark.src = "img/bohater1.webp";
+    sakuya.src = "img/sakuya.webp";
+    cirno.src = "img/cirno.webp";
+    amogus.src = "img/amogus.webp";
+    amogusp.src = "img/amogusp.webp";
+    rozbujnik.src = "img/bandyta.webp";
+    rozbujnikp.src = "img/bandytap.webp";
+    czarny.src = "img/czarny.webp";
+    czarnyp.src = "img/czarnyp.webp";
+    jajojajo.src = "img/jajojajo.webp";
+    jajojajol.src = "img/jajojajol.webp";
+    joniw.src = "img/joniw.webp";
+    joniwl.src = "img/joniwl.webp";
+    niewiem.src = "img/niewiem.webp";
+    niewiemp.src = "img/niewiemp.webp";
+    pjonk.src = "img/pjonk.webp";
+    pjonkp.src = "img/pjonkp.webp";
+    rybson.src = "img/rybson.webp";
+    rybsonl.src = "img/rybsonl.webp";
+    rycerzyk.src = "img/rycerzyk.webp";
+    rycerzykp.src = "img/rycerzykp.webp";
+    wulf.src = "img/wulf.webp";
+    wulfp.src = "img/wulf.webp";
+    noz.src = "img/nusz.webp";
+    kulaognia.src = "img/fireball.webp";
+    pigula.src = "img/pigul.webp";
 });
 
 class potworek {
@@ -253,12 +340,15 @@ class potworek {
         this.maxyhp = this.hp;
         this.dotabeli = 0;
         this.szybkosc = 1;
-        this.bomba = 0;
+        this.bomba = 1;
         this.textp = kolko;
         this.textl = lewekolko;
         this.sciezka = mapa;
         this.armor = 0;
         this.mresist = 0;
+        this.drop = 10;
+        this.poisoned = 0;
+        this.poisonedtime = 0;
     }
     render() {
         ctx.save();
@@ -279,6 +369,7 @@ class potworek {
             this.chodzenie();
         }
         this.uszkodzenie();
+        this.poison();
     }
 
     maxhp() {
@@ -287,7 +378,7 @@ class potworek {
         ctx.fillStyle = "green";
         if (this.hp <= 0) {
             this.hp = 0;
-            pieniadze += 10 + Math.floor(Math.random() * 10);
+            pieniadze += this.drop + Math.floor(Math.random() * 10);
             tablica.splice(tablica.indexOf(this), 1);
         }
         ctx.fillRect(this.x + 25 - this.maxyhp * 0.5, this.y - 50, this.hp, 20);
@@ -303,41 +394,185 @@ class potworek {
         if (this.dotabeli == this.sciezka.length) {
             zycie -= this.bomba;
             tablica.splice(tablica.indexOf(this), 1);
+            if (zycie <= 0) {
+                zycie = 0;
+                koniec.style.visibility = "visible";
+                statyfali.style.visibility = "visible";
+                statyfali.innerText = "Przetrwałeś " + fala + " fal";
+                rysowac = false;
+                tablica = [];
+                heros = [];
+                dospawna = [];
+                pociski = [];
+            }
+        }
+    }
+
+    poison() {
+        if (this.poisoned == 1) {
+            let czas = new Date().getTime();
+            if (czas - this.poisonedtime > 1000) {
+                this.poisonedtime = czas;
+                this.hp -= 10;
+            }
         }
     }
 }
-class zolniez extends potworek {
+class bandyta extends potworek {
     constructor(x, y) {
         super(x, y);
         this.hp = 100;
-        this.dotabeli = 0;
         this.maxyhp = 100;
-        this.szybkosc = 4;
-        this.spawn = 1;
-        this.bomba = 1;
+        this.szybkosc = 3;
+        this.spawn = 0.5;
         this.sciezka = mapa;
         this.armor = 1;
         this.mresist = 1;
+        this.drop = 30;
+        this.textp = rozbujnikp;
+        this.textl = rozbujnik;
+    }
+}
+class bandytamocniejszy extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 200;
+        this.maxyhp = 200;
+        this.szybkosc = 2;
+        this.bomba = 2;
+        this.spawn = 0.7;
+        this.sciezka = mapa;
+        this.armor = 1;
+        this.mresist = 1;
+        this.drop = 40;
+        this.textp = amogusp;
+        this.textl = amogus;
+    }
+}
+class opancerzonylekko extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 150;
+        this.maxyhp = 150;
+        this.szybkosc = 3;
+        this.spawn = 0.5;
+        this.sciezka = mapa;
+        this.armor = 0.7;
+        this.mresist = 1;
+        this.drop = 45;
+        this.textp = jajojajo;
+        this.textl = jajojajol;
+    }
+}
+class opancerzonyciezko extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 200;
+        this.maxyhp = 200;
+        this.szybkosc = 3;
+        this.bomba = 2;
+        this.spawn = 1.2;
+        this.sciezka = mapa;
+        this.armor = 0.4;
+        this.mresist = 1;
+        this.drop = 60;
+        this.textp = rycerzykp;
+        this.textl = rycerzyk;
+    }
+}
+
+class szybcior extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 100;
+        this.maxyhp = 100;
+        this.szybkosc = 4.5;
+        this.spawn = 1;
+        this.sciezka = mapa;
+        this.armor = 1;
+        this.mresist = 0.5;
+        this.drop = 40;
+        this.textp = wulfp;
+        this.textl = wulf;
     }
 }
 class ryba extends potworek {
     constructor(x, y) {
         super(x, y);
-        this.hp = 250;
-        this.dotabeli = 0;
-        this.maxyhp = 250;
-        this.dotabeli = 0;
+        this.hp = 100;
+        this.maxyhp = 100;
         this.szybkosc = 1;
-        this.spawn = 1;
-        this.bomba = 4;
-        this.textl = rybal;
-        this.textp = rybap;
+        this.spawn = 0.5;
         this.sciezka = mapa2;
-        this.armor = 0.5;
-        this.mresist = 1;
+        this.armor = 1;
+        this.mresist = 0.6;
+        this.drop = 30;
+        this.textp = rybson;
+        this.textl = rybsonl;
     }
 }
-
+class sum extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 250;
+        this.maxyhp = 250;
+        this.szybkosc = 2;
+        this.spawn = 0.5;
+        this.sciezka = mapa2;
+        this.armor = 0.6;
+        this.mresist = 1;
+        this.drop = 70;
+        this.textp = niewiemp;
+        this.textl = niewiem;
+    }
+}
+class pstrag extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 150;
+        this.maxyhp = 150;
+        this.szybkosc = 4;
+        this.spawn = 0.6;
+        this.sciezka = mapa2;
+        this.armor = 1;
+        this.mresist = 1;
+        this.drop = 40;
+        this.textp = czarnyp;
+        this.textl = czarny;
+    }
+}
+class karas extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 300;
+        this.maxyhp = 300;
+        this.szybkosc = 1;
+        this.spawn = 1;
+        this.bomba = 3;
+        this.sciezka = mapa2;
+        this.armor = 0.7;
+        this.mresist = 1;
+        this.drop = 55;
+        this.textp = joniw;
+        this.textl = joniwl;
+    }
+}
+class nedyryba extends potworek {
+    constructor(x, y) {
+        super(x, y);
+        this.hp = 250;
+        this.maxyhp = 250;
+        this.szybkosc = 2;
+        this.spawn = 0.5;
+        this.bomba = 4;
+        this.sciezka = mapa2;
+        this.armor = 0.4;
+        this.mresist = 0.8;
+        this.drop = 100;
+        this.textp = pjonkp;
+        this.textl = pjonk;
+    }
+}
 //sojusznicy
 class bohater {
     constructor(x, y, dmg, range, atkspd) {
@@ -353,10 +588,12 @@ class bohater {
         this.velocity = 6;
         this.umocny = 0;
         this.penarmora = 0;
+        this.magicpen = 1;
+        this.specpocisk = 0;
+        this.text = nekoark;
     }
     render() {
-        ctx.fillStyle = "green";
-        ctx.fillRect(this.x, this.y, 50, 50);
+        ctx.drawImage(this.text, this.x, this.y, 50, 50);
         if (this.focused == 1) {
             ctx.fillStyle = "rgba(0,0,0,0.5)";
             ctx.beginPath();
@@ -384,7 +621,6 @@ class bohater {
         if (this.ugorny == 3) {
             this.ulepszenie4();
         }
-
         if (this.ugorny == 2 && this.umocny != 2) {
             this.ulepszenie3();
         }
@@ -416,12 +652,14 @@ class boh1 extends bohater {
         super(x, y, dmg, range, atkspd);
         this.id = 1;
         this.koszt = 100;
-        this.name = "necoarc";
+        this.name = "Necoarc";
         this.velocity = 30;
         this.oneshot = 0;
         this.opis = "+10 damage<br>koszt: 200";
         this.opisd = "-0.2 atkspd<br>koszt: 150";
         this.penarmora = 0;
+        this.text = nekoark;
+        this.textatk = pigula;
     }
     ulepszenie1() {
         let kosztowanie = 200;
@@ -441,43 +679,50 @@ class boh1 extends bohater {
             this.ugorny = 2;
 
             if (this.umocny == 0) {
-                this.opis = "+100 damage<br>+0.2 atkspd<br>koszt: 400";
+                this.opis = "+80 damage<br>+0.2 atkspd<br>koszt: 600";
                 ugora.innerHTML = this.opis;
             } else {
                 this.opis = "maxed";
                 ugora.innerHTML = this.opis;
             }
+            console.log(this.udolny);
         }
     }
 
     ulepszenie3() {
-        let kosztowanie = 400;
+        let kosztowanie = 600;
         if (pieniadze >= kosztowanie) {
             pieniadze -= kosztowanie;
-            this.damage += 100;
+            this.damage += 80;
             this.atkspd += 0.2;
             this.ugorny = 3;
-            this.umocny = 2;
-            this.opis = "+200 damage<br>+0.5 atkspd<br>+100 range<br>+Szansa na zabicie wroga jednym strzałem<br>+40 velocity<br>koszt: 1000";
+            this.umocny = 1;
+            this.opis = "+120 damage<br>+0.7 atkspd<br>+100 range<br>+Szansa na zabicie wroga jednym strzałem<br>+40 velocity<br>koszt: 1200";
             ugora.innerHTML = this.opis;
+            if (this.udolny == 2) {
+                this.opisd = "maxed";
+                udol.innerHTML = this.opisd;
+            }
         }
     }
     ulepszenie4() {
-        let kosztowanie = 1000;
+        let kosztowanie = 1200;
         if (pieniadze >= kosztowanie) {
-            this.damage += 200;
-            this.atkspd += 0.5;
+            pieniadze -= kosztowanie;
+            this.damage += 120;
+            this.atkspd += 0.7;
             this.range += 100;
             this.velocity += 40;
             this.opis = "maxed";
             ugora.innerText = this.opis;
             this.oneshot = 1;
             this.ugorny = 4;
+            this.specpocisk = 1;
         }
     }
 
     ulepszenie1d() {
-        let kosztowanie = 200;
+        let kosztowanie = 150;
         if (pieniadze > kosztowanie) {
             pieniadze -= kosztowanie;
             this.atkspd -= 0.15;
@@ -493,8 +738,14 @@ class boh1 extends bohater {
             this.range += 25;
             this.damage -= 5;
             this.udolny = 2;
-            this.opisd = "-0.1 atkspd<br>+10 damage<br>koszt: 850";
-            udol.innerHTML = this.opisd;
+            if (this.umocny == 0) {
+                this.opisd = "-0.1 atkspd<br>+10 damage<br>koszt: 850";
+                udol.innerHTML = this.opisd;
+            } else {
+                this.opisd = "maxed";
+                udol.innerHTML = this.opisd;
+            }
+            console.log(this.opisd);
         }
     }
     ulepszenie3d() {
@@ -504,10 +755,14 @@ class boh1 extends bohater {
             this.atkspd -= 0.1;
             this.atkspd = this.atkspd.toFixed(2);
             this.damage += 10;
-            this.umocny = 1;
+            this.umocny = 2;
             this.udolny = 3;
             this.opisd = "+25% penetracji pancerza<br>koszt: 1200";
             udol.innerHTML = this.opisd;
+            if (this.ugorny == 2) {
+                this.opis = "maxed";
+                ugora.innerHTML = this.opis;
+            }
         }
     }
     ulepszenie4d() {
@@ -515,6 +770,7 @@ class boh1 extends bohater {
         if (pieniadze >= kosztowanie) {
             pieniadze -= kosztowanie;
             this.penarmora = 0.25;
+            this.udolny = 4;
             this.opisd = "maxed";
             udol.innerHTML = this.opisd;
         }
@@ -524,54 +780,263 @@ class boh2 extends bohater {
     constructor(x, y, dmg, range, atkspd) {
         super(x, y, dmg, range, atkspd);
         this.id = 2;
-        this.koszt = 200;
-        this.name = "obama";
+        this.koszt = 300;
+        this.name = "Sakuya";
         this.velocity = 20;
+        this.penarmora = 0.2;
+        this.velocity = 14;
+        this.critchance = 0;
+        this.procentowe = 0;
+        this.opis = "+15 damage<br>+6 velocity<br>koszt: 200";
+        this.opisd = "+5 damage<br>+30 range<br>koszt: 400";
+        this.text = sakuya;
+        this.textatk = noz;
     }
     ulepszenie1() {
-        this.damage += 10;
+        let kosztowanie = 200;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage += 15;
+            this.velocity += 6;
+            this.ugorny = 1;
+            this.opis = "+10 damage<br>+30 range<br>koszt: 600";
+            ugora.innerHTML = this.opis;
+        }
     }
     ulepszenie2() {
-        this.damage += 10;
+        let kosztowanie = 600;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage += 10;
+            this.range += 30;
+            this.ugorny = 2;
+            ugora.innerHTML = this.opis;
+            if (this.umocny == 0) {
+                this.opis = "-0.2 atkspd<br>koszt: 1000";
+                ugora.innerHTML = this.opis;
+            } else {
+                this.opis = "maxed";
+                udol.innerHTML = this.opis;
+            }
+        }
     }
     ulepszenie3() {
-        this.damage += 10;
+        let kosztowanie = 1000;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.atkspd -= 0.2;
+            this.atkspd = this.atkspd.toFixed(1);
+            this.ugorny = 3;
+            this.umocny = 1;
+            this.opis = "-60 damage<br>-0.5 atkspd<br>+40% szansy na trafienie krytyczne<br>koszt: 1500";
+
+            ugora.innerHTML = this.opis;
+            if (this.udolny == 2) {
+                this.opisd = "maxed";
+                udol.innerHTML = this.opisd;
+            }
+        }
     }
     ulepszenie4() {
-        this.damage += 10;
+        let kosztowanie = 1500;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage -= 55;
+            this.atkspd -= 0.3;
+            this.opis = "maxed";
+            ugora.innerText = this.opis;
+            this.critchance = 1;
+            this.ugorny = 4;
+            this.specpocisk = 1;
+        }
     }
-    ulepszenie1d() {}
-    ulepszenie2d() {}
-    ulepszenie3d() {}
-    ulepszenie4d() {}
+    ulepszenie1d() {
+        let kosztowanie = 400;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage += 5;
+            this.range += 30;
+            this.udolny = 1;
+            this.opisd = "+5 damage<br>+25 range<br>+0.2 atkspd<br>koszt: 650";
+            udol.innerHTML = this.opisd;
+        }
+    }
+    ulepszenie2d() {
+        let kosztowanie = 650;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage += 5;
+            this.range += 25;
+            this.atkspd += 0.2;
+            this.udolny = 2;
+            udol.innerHTML = this.opisd;
+            if (this.umocny == 0) {
+                this.opisd = "+15 damage<br>-0.1 atkspd<br>koszt: 1000";
+                udol.innerHTML = this.opisd;
+            } else {
+                this.opisd = "maxed";
+                udol.innerHTML = this.opisd;
+            }
+        }
+    }
+    ulepszenie3d() {
+        let kosztowanie = 1000;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.atkspd -= 0.1;
+            this.damage += 15;
+            this.umocny = 2;
+            this.udolny = 3;
+            this.opisd = "+10% akt. zdrowia celu damage<br>koszt: 1200";
+            udol.innerHTML = this.opisd;
+            if (this.ugorny == 2) {
+                this.opis = "maxed";
+                ugora.innerHTML = this.opis;
+            }
+        }
+    }
+    ulepszenie4d() {
+        let kosztowanie = 1200;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.procentowe = 1;
+            this.udolny = 4;
+            this.opisd = "maxed";
+            udol.innerHTML = this.opisd;
+            this.specpocisk = 1;
+        }
+    }
 }
 class boh3 extends bohater {
     constructor(x, y, dmg, range, atkspd) {
         super(x, y, dmg, range, atkspd);
         this.id = 3;
         this.koszt = 400;
-        this.name = "duda";
+        this.name = "Cirno";
+        this.velocity = 16;
+        this.specpocisk = 0;
+        this.poison = 0;
+        this.area = 0;
+        this.penarmora = 1;
+        this.magicpen = 0;
+        this.opis = "+40 range<br>koszt: 400";
+        this.opisd = "+10 damage<br>koszt: 250";
+        this.text = cirno;
+        this.textatk = kulaognia;
     }
     ulepszenie1() {
-        this.damage += 10;
-        ugora.innerText = "u2";
+        let kosztowanie = 400;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.range += 40;
+            this.ugorny = 1;
+            this.opis = "+15 damage<br>+15 velocity<br>koszt: 600";
+            ugora.innerHTML = this.opis;
+        }
     }
     ulepszenie2() {
-        this.damage += 10;
-        ugora.innerText = "u3";
+        let kosztowanie = 600;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage += 15;
+            this.velocity += 15;
+            this.ugorny = 2;
+
+            if (this.umocny == 0) {
+                this.opis = "-0.15 atkspd<br>koszt: 950";
+                ugora.innerHTML = this.opis;
+            } else {
+                this.opis = "maxed";
+                ugora.innerHTML = this.opis;
+            }
+            console.log(this.udolny);
+        }
     }
+
     ulepszenie3() {
-        this.damage += 10;
-        ugora.innerText = "u4";
+        let kosztowanie = 950;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.atkspd -= 0.15;
+            this.ugorny = 3;
+            this.umocny = 1;
+            this.opis = "+25 range<br>+Palenie przeciwników<br>koszt: 1000";
+            ugora.innerHTML = this.opis;
+            if (this.udolny == 2) {
+                this.opisd = "maxed";
+                udol.innerHTML = this.opisd;
+            }
+        }
     }
     ulepszenie4() {
-        this.damage += 10;
-        ugora.innerText = "max";
+        let kosztowanie = 1000;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+
+            this.range += 25;
+            this.opis = "maxed";
+            ugora.innerText = this.opis;
+            this.poison = 1;
+            this.ugorny = 4;
+            this.specpocisk = 1;
+        }
     }
-    ulepszenie1d() {}
-    ulepszenie2d() {}
-    ulepszenie3d() {}
-    ulepszenie4d() {}
+
+    ulepszenie1d() {
+        let kosztowanie = 250;
+        if (pieniadze > kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.damage += 10;
+            this.udolny = 1;
+            this.opisd = "+20 range<br>+10 damage<br>koszt: 600";
+            udol.innerHTML = this.opisd;
+        }
+    }
+    ulepszenie2d() {
+        let kosztowanie = 400;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.range += 20;
+            this.damage += 10;
+            this.udolny = 2;
+            if (this.umocny == 0) {
+                this.opisd = "+20 damage<br>+1 atkspd<br>koszt: 1000";
+                udol.innerHTML = this.opisd;
+            } else {
+                this.opisd = "maxed";
+                udol.innerHTML = this.opisd;
+            }
+        }
+    }
+    ulepszenie3d() {
+        let kosztowanie = 1000;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.atkspd += 1;
+            this.atkspd = this.atkspd.toFixed(1);
+            this.damage += 20;
+            this.umocny = 2;
+            this.udolny = 3;
+            this.opisd = "+20 damage<br>+Obszarowy atak<br>koszt: 1600";
+            udol.innerHTML = this.opisd;
+            if (this.ugorny == 2) {
+                this.opis = "maxed";
+                ugora.innerHTML = this.opis;
+            }
+        }
+    }
+    ulepszenie4d() {
+        let kosztowanie = 1600;
+        if (pieniadze >= kosztowanie) {
+            pieniadze -= kosztowanie;
+            this.area = 1;
+            this.damage += 20;
+            this.udolny = 4;
+            this.opisd = "maxed";
+            udol.innerHTML = this.opisd;
+            this.specpocisk = 1;
+        }
+    }
 }
 
 class strzal {
@@ -588,26 +1053,55 @@ class strzal {
         this.lot();
     }
     render() {
-        ctx.fillStyle = "black";
         ctx.save();
         ctx.translate(this.x + 25, this.y + 25);
         if (tablica[this.cel]) {
             ctx.rotate(Math.atan2(tablica[this.cel]["y"] - this.y, tablica[this.cel]["x"] - this.x));
         }
-        ctx.fillRect(25, -5, 10, 10);
+        ctx.drawImage(this.odkogo.textatk, -25, -25, 50, 50);
         ctx.restore();
     }
+
     bijatyka() {
         if (!tablica[this.cel]) {
             pociski.splice(pociski.indexOf(this), 1);
         } else if (dystans(this.x, this.y, tablica[this.cel].x - 25, tablica[this.cel].y - 25) < 50) {
-            if (this.odkogo.oneshot == 1) {
-                if (Math.random() * 1 < 0.5) {
-                    tablica[this.cel].hp -= tablica[this.cel].hp;
+            if (this.odkogo.specpocisk == 1) {
+                if (this.odkogo.oneshot == 1) {
+                    if (Math.random() * 1 > 0.7) {
+                        tablica[this.cel].hp -= tablica[this.cel].hp;
+                    } else {
+                        tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1);
+                    }
                 }
+                if (this.odkogo.critchance == 1) {
+                    if (Math.random() * 1 > 0.6) {
+                        tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1) * 4;
+                    } else {
+                        tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1);
+                    }
+                }
+                if (this.odkogo.procentowe == 1) {
+                    tablica[this.cel].hp -= tablica[this.cel].hp * 0.1 + this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1);
+                }
+                if (this.odkogo.poison == 1) {
+                    tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1);
+                    tablica[this.cel].poisoned = 1;
+                }
+                if (this.odkogo.area == 1) {
+                    tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1);
+                    for (let index = 0; index < tablica.length; index++) {
+                        if (dystans(tablica[this.cel].x, tablica[this.cel].y, tablica[index].x, tablica[index].y) < 100 && index != this.cel) {
+                            tablica[index].hp -= this.damage * (tablica[index].armor + this.odkogo.penarmora < 1 ? tablica[index].armor + this.odkogo.penarmora : 1) * (tablica[index].mresist + this.odkogo.magicpen < 1 ? tablica[index].mresist + this.odkogo.magicpen : 1);
+                        }
+                    }
+                }
+
+                pociski.splice(pociski.indexOf(this), 1);
+            } else {
+                tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * (tablica[this.cel].mresist + this.odkogo.magicpen < 1 ? tablica[this.cel].mresist + this.odkogo.magicpen : 1);
+                pociski.splice(pociski.indexOf(this), 1);
             }
-            tablica[this.cel].hp -= this.damage * (tablica[this.cel].armor + this.odkogo.penarmora < 1 ? tablica[this.cel].armor + this.odkogo.penarmora : 1) * tablica[this.cel].mresist;
-            pociski.splice(pociski.indexOf(this), 1);
         }
     }
     lot() {
@@ -625,20 +1119,20 @@ function nacisniecie() {
             przejscie = 1;
             nazwachampa.innerText = heros[index].name;
             statyt.innerText = "dmg: " + heros[index].damage + " range: " + heros[index].range + " atkspd: " + heros[index].atkspd;
-            nazwachampa.setAttribute("style", "visibility:visible;");
-            ugora.setAttribute("style", "visibility:visible;");
-            udol.setAttribute("style", "visibility:visible;");
-            statyt.setAttribute("style", "visibility:visible;");
+            nazwachampa.style.visibility = "visible";
+            ugora.style.visibility = "visible";
+            udol.style.visibility = "visible";
+            statyt.style.visibility = "visible";
 
             ugora.innerHTML = heros[index].opis;
 
             udol.innerHTML = heros[index].opisd;
         } else {
             if (przejscie == 0) {
-                nazwachampa.setAttribute("style", "visibility:hidden;");
-                ugora.setAttribute("style", "visibility:hidden;");
-                udol.setAttribute("style", "visibility:hidden;");
-                statyt.setAttribute("style", "visibility:hidden;");
+                nazwachampa.style.visibility = "hidden";
+                ugora.style.visibility = "hidden";
+                udol.style.visibility = "hidden";
+                statyt.style.visibility = "hidden";
             }
             heros[index].focused = 0;
         }
@@ -647,10 +1141,34 @@ function nacisniecie() {
 
 function pusfale(a) {
     for (let i = 0; i < a[0]; i++) {
-        dospawna.push(new zolniez(1400, 363));
+        dospawna.push(new bandyta(1400, 363));
     }
     for (let i = 0; i < a[1]; i++) {
-        dospawna.push(new ryba(910, 87));
+        dospawna.push(new bandytamocniejszy(1400, 363));
+    }
+    for (let index = 0; index < a[2]; index++) {
+        dospawna.push(new opancerzonylekko(1400, 363));
+    }
+    for (let index = 0; index < a[3]; index++) {
+        dospawna.push(new opancerzonyciezko(1400, 363));
+    }
+    for (let index = 0; index < a[4]; index++) {
+        dospawna.push(new szybcior(1400, 363));
+    }
+    for (let index = 0; index < a[5]; index++) {
+        dospawna.push(new ryba(910, 10));
+    }
+    for (let index = 0; index < a[6]; index++) {
+        dospawna.push(new sum(910, 10));
+    }
+    for (let index = 0; index < a[7]; index++) {
+        dospawna.push(new pstrag(910, 10));
+    }
+    for (let index = 0; index < a[8]; index++) {
+        dospawna.push(new karas(910, 10));
+    }
+    for (let index = 0; index < a[9]; index++) {
+        dospawna.push(new nedyryba(910, 10));
     }
 }
 let datas = new Date().getTime();
@@ -669,14 +1187,6 @@ function exfali() {
 window.addEventListener("click", function (x) {
     myszax = x.x - can.offsetLeft;
     myszay = x.y - can.offsetTop;
-    // if (myszax > 0 && myszax < 1310 && myszay > 0 && myszay < 675) {
-    //     // mapa2.push({
-    //     //     x: myszax,
-    //     //     y: myszay,
-    //     // });
-    //     // console.log(mapa2);
-    // }
-    console.log(myszax, myszay);
 });
 var c = 0;
 
@@ -693,7 +1203,7 @@ function rysowanie() {
         rysowac = kwadraciok;
         if (rysowac) {
             imgdata = ctx.getImageData(myszaxt, myszayt, 1, 1);
-            ctx.fillRect(myszaxt - 12.5, myszayt - 12.5, 25, 25);
+            ctx.fillRect(myszaxt - 25, myszayt - 25, 50, 50);
         }
 
         for (const pojda of tablica) {
@@ -722,6 +1232,16 @@ function rysowanie() {
         ctx.drawImage(serc, 190, 20, 50, 50);
         ctx.fillText(zycie, 250, 60);
         ctx.fillText(fps.toFixed(0), 10, 120);
+
+        if (fala == 10 && tablica.length == 0) {
+            win.style.visibility = "visible";
+            rysowac = false;
+            tablica = [];
+            heros = [];
+            dospawna = [];
+            pociski = [];
+        }
+
         // console.log(fps);
     }
 

@@ -92,6 +92,7 @@
 
         #bombaklag {
             overflow-y: scroll;
+            overflow-x: hidden;
             max-height: 679px;
             width: 300px;
             background-color: red;
@@ -176,7 +177,7 @@
         .pojduwina {
             margin-top: 10px;
             height: 350px;
-            width: 200;
+            width: 170px;
         }
 
         .staty {
@@ -196,6 +197,38 @@
             width: 25px;
             margin: 0;
         }
+
+        #koniec,
+        #win {
+            color: black;
+            position: absolute;
+            text-align: center;
+            top: 40%;
+            left: 40%;
+            width: 20%;
+            height: 20%;
+            background-color: aliceblue;
+            border: solid 3px red;
+            border-radius: 30px;
+            visibility: hidden;
+        }
+
+        #statyfali {
+            color: black;
+            font-size: 0.5em;
+        }
+
+        .reset {
+            background-color: #293241;
+            border: #53d4ff solid 3px;
+            color: white;
+            font-size: 0.7em;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            width: 100%;
+            height: 30%;
+        }
     </style>
 </head>
 
@@ -205,8 +238,7 @@
         <img src="img/rysunek.svg" alt="logo gry" id="logo">
         <a href="stronaglowna.html">Strona główna</a>
         <a href="samouczek.html">Samouczek</a>
-        <a href="">Bohaterzy</a>
-        <a href="">Bestiariusz</a>
+        <a href="potwory.html">Potwory</a>
         <a href="gra.html">Gra</a>
     </nav>
 
@@ -223,6 +255,14 @@
     <span id="statyt"></span>
     <button class="ulepszenia" id="ugora"></button>
     <button class="ulepszenia" id="udol"></button>
+    <div id="koniec">Koniec gry<br>
+        <span id="statyfali"></span>
+        <button class="reset" id="reset">Rozpocznij od początku</button>
+    </div>
+    <div id="win">Wygrałeś!!
+        <button class="reset" id="winreset">Rozpocznij od początku</button>
+    </div>
+
 </body>
 
 </html>

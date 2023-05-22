@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 
 <head>
     <meta charset="UTF-8">
@@ -7,37 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strona glowna</title>
     <link rel="stylesheet" href="kolorki.css">
+    <style>
+        #przyklad {
+            height: 40%;
+            width: 80%;
+        }
+
+        @media screen and (max-width: 800px) {
+            #przyklad {
+                height: auto;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <nav>
-        <img src="img/rysunek.svg" alt="logo gry">
+        <img src="img/rysunek.svg" alt="logo gry" class="logo">
         <a href="stronaglowna.html">Strona główna</a>
         <a href="samouczek.html">Samouczek</a>
-        <a href="">Bohaterzy</a>
-        <a href="">Potwory</a>
+        <a href="potwory.html">Potwory</a>
         <a href="gra.html">Gra</a>
     </nav>
-    <main>
+    <div class="glownie">
         <div>
             <h1>Witaj w grze FAFAU!</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, dicta ad. Dolor corporis, hic
-                neque optio quaerat commodi fuga nesciunt suscipit iste esse eius vero perferendis dolorum iure est
-                voluptates tenetur laborum, maxime aliquam dolore expedita vitae! Sit eveniet sunt, praesentium eius
-                deleniti eum dolores in nam temporibus natus doloribus molestias delectus, ex harum corrupti facere
-                earum recusandae modi! Porro perspiciatis itaque voluptas veritatis eaque nisi, fugit nostrum at commodi
-                esse aspernatur. Id ad autem cupiditate! Perferendis in at, molestiae velit consequatur consectetur,
-                facere modi omnis nulla vitae itaque provident nam illo odio. Consequatur nobis rerum expedita saepe
-                voluptate itaque reiciendis optio dolore autem nulla, minus id magni! Eligendi modi consectetur
-                accusamus ab saepe accusantium nostrum id rerum earum, in repudiandae fuga quis, ex quibusdam explicabo,
-                dolorum laudantium vel asperiores sequi corrupti vitae nihil veritatis inventore eos. Deleniti
-                consectetur ducimus cumque asperiores officiis incidunt suscipit, qui voluptatum accusantium vitae fuga
-                eligendi molestiae nobis tenetur, numquam nostrum aliquam perspiciatis recusandae ipsum optio ex eaque
-                facere, modi aliquid? Rem sed molestiae quibusdam consectetur dignissimos, quisquam, dolore obcaecati
-                eum sint, velit ullam veniam dolores fugiat vitae voluptatem dolor maiores error nihil pariatur
-                voluptatibus voluptate optio neque quasi? Veniam tempore quam tenetur sint obcaecati.
+            <p>Jest to Gra typu tower defense gdzie gracz stawia wieże, które bronią przed rożnego rodzaju potworami.
+                Gracz ma możliwość ulepszania wieży aby stały się silniejsze i aby żaden potwór nie był w stanie
+                przejść przez jego linię obrony</p><br>
+            <p>W grze znajdują się 3 rodzaje wierzy, które można ulepszać do 4 poziomu. Każda wieża na ostatnim
+                ulepszeniu posiada unikalną umiejętność specjalną oto przykładowe zdjęcie
+            </p><img src="img/image.png" alt="przykładowe zdjęcie" id="przyklad">
         </div>
 
-    </main>
+    </div>
     <canvas class="can"></canvas>
 </body>

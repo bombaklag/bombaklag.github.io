@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 
 <head>
     <meta charset="UTF-8">
@@ -7,23 +7,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Samouczek</title>
     <link rel="stylesheet" href="kolorki.css">
+    <style>
+        .dosamouczka {
+            width: 20%;
+            height: 20%;
+        }
+
+        .male {
+            width: 5%;
+            height: 5%;
+        }
+
+        @media screen and (max-width: 800px) {
+            .dosamouczka {
+                width: 100%;
+                height: 100%;
+            }
+
+            nav {
+                height: 5em;
+            }
+
+            #logo {
+                width: 5em;
+                height: 5em;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <nav>
-        <img src="img/rysunek.svg" alt="logo gry">
+        <img src="img/rysunek.svg" alt="logo gry" id="logo">
         <a href="stronaglowna.html">Strona główna</a>
         <a href="samouczek.html">Samouczek</a>
-        <a href="">Bohaterzy</a>
-        <a href="">Potwory</a>
+        <a href="potwory.html">Potwory</a>
         <a href="gra.html">Gra</a>
     </nav>
-    <main>
+    <div class="glownie">
         <div>
             <h1>Tutaj znajdziesz poradniki!</h1>
         </div>
-        <div>1. Atakowanie</div>
-    </main>
+        <div>
+            <h2>1. Atakowanie przeciwników</h2>
+            <p>Gdy przeciwnik znajduje się w zasięgu wieży atakuje go wieża</p>
+            <img src="img/atak.webp" alt="zdjęcie pokazujące atak" class="dosamouczka">
+        </div>
+        <div>
+            <h2>2. Ulepszanie wież</h2>
+            <p>Wieżę można ulepszać klikając na nią i naciskając na guziki odpowiadające za ulepszanie</p>
+            <img src="img/ulepsz.webp" alt="zdjęcie pokazujące ulepszanie" class="dosamouczka">
+        </div>
+        <div>
+            <h2>3. Statystyki wież</h2>
+            <p>Każda wieża posiada statystyki takie jak</p>
+            <ul>
+                <li>Obrażenia <img src="img/damage.webp" alt="ikona ataku" class="male"></li>
+                <li>Prędkość ataku<img src="img/atkspd.webp" alt="ikona prędkości ataku" class="male"></li>
+                <li>Zasięg <img src="img/range.webp" alt="ikona zasięgu" class="male"></li>
+                <li>Koszt postawienia <img src="img/mamona.webp" alt="ikona pieniędzy" class="male"></li>
+            </ul>
+        </div>
+        <div>
+            <h2>4. Statystyki potworów</h2>
+            <p>Część przeciwników posiada pancerz który procentowo chroni ich przed obrażeniami, aby radzić sobie z tego
+                typu przeciwnikami należy postawić wieżę która zadaje magiczne obrażenia lub ulepszyć wieżę, żeby była w
+                stanie przebić pancerz przeciwnika</p>
+            <img src="img/armory.webp" alt="Mechanika pancerza" class="dosamouczka">
+
+        </div>
+    </div>
 </body>
 
 </html>
