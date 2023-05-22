@@ -1231,7 +1231,6 @@ function rysowanie() {
         ctx.fillText(pieniadze, 70, 60);
         ctx.drawImage(serc, 190, 20, 50, 50);
         ctx.fillText(zycie, 250, 60);
-        ctx.fillText(fps.toFixed(0), 10, 120);
 
         if (fala == 10 && tablica.length == 0) {
             win.style.visibility = "visible";
